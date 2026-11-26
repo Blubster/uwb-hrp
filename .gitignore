@@ -10,6 +10,8 @@ build/
 *.egg-info/
 .coverage
 htmlcov/
+.cache/
+site/
 
 # Local reference documents (do not commit copyrighted standards)
 802154-2024.pdf

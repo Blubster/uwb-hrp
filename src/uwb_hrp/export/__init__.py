@@ -1,4 +1,10 @@
-"""Extensible ARB waveform export layer (vendor-neutral core + instrument backends)."""
+"""Extensible ARB waveform export layer (vendor-neutral core and instrument backends).
+
+Provides vendor-neutral active-power normalization, semantic marker tracks, and
+the [ARBExporter][uwb_hrp.export.ARBExporter] abstract base class alongside the
+built-in Rohde & Schwarz `.wv` exporter
+([RSWaveformExporter][uwb_hrp.export.RSWaveformExporter]).
+"""
 
 from uwb_hrp.export.base import (
     ARBExporter,

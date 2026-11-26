@@ -1,0 +1,103 @@
+[project]
+site_name = "uwb-hrp"
+site_description = "IEEE Std 802.15.4-2024 compliant HRP UWB PHY frame and baseband waveform generator"
+site_url = "https://blubster.github.io/uwb-hrp/"
+repo_url = "https://github.com/Blubster/uwb-hrp"
+repo_name = "Blubster/uwb-hrp"
+edit_uri = "edit/main/docs/"
+
+nav = [
+    { "Home" = "index.md" },
+    { "Getting Started" = "getting-started.md" },
+    { "User Guides" = [
+        { "PHY Modes & Configuration" = "guides/phy-modes.md" },
+        { "Frame Structure & STS" = "guides/frame-structure.md" },
+        { "Pulse Shaping & Compliance" = "guides/pulse-shaping.md" },
+        { "ARB Waveform Export" = "guides/arb-export.md" },
+    ] },
+    { "Standards & Verification" = "standards-compliance.md" },
+    { "API Reference" = [
+        { "Top-Level API" = "api/index.md" },
+        { "Configuration" = "api/config.md" },
+        { "Pulse Shaping" = "api/pulse.md" },
+        { "ARB Export" = "api/export.md" },
+        { "PHY Building Blocks" = "api/phy.md" },
+    ] },
+]
+
+extra_javascript = [
+    "javascripts/mathjax.js",
+    "https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js",
+]
+
+[project.theme]
+features = [
+    "navigation.tabs",
+    "navigation.sections",
+    "navigation.top",
+    "navigation.indexes",
+    "search.suggest",
+    "search.highlight",
+    "content.code.copy",
+    "content.code.annotate",
+]
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "indigo"
+accent = "cyan"
+toggle.icon = "material/brightness-7"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "indigo"
+accent = "cyan"
+toggle.icon = "material/brightness-4"
+toggle.name = "Switch to light mode"
+
+[project.plugins.mkdocstrings]
+default_handler = "python"
+
+[project.plugins.mkdocstrings.handlers.python]
+paths = ["src"]
+
+[project.plugins.mkdocstrings.handlers.python.options]
+docstring_style = "google"
+docstring_section_style = "table"
+show_source = true
+show_root_heading = true
+show_root_full_path = false
+members_order = "source"
+separate_signature = true
+show_signature_annotations = true
+signature_crossrefs = true
+merge_init_into_class = true
+
+[project.markdown_extensions]
+admonition = {}
+attr_list = {}
+def_list = {}
+footnotes = {}
+tables = {}
+toc.permalink = true
+
+[project.markdown_extensions.pymdownx.arithmatex]
+generic = true
+
+[project.markdown_extensions.pymdownx.details]
+
+[project.markdown_extensions.pymdownx.highlight]
+anchor_linenums = true
+
+[project.markdown_extensions.pymdownx.inlinehilite]
+
+[project.markdown_extensions.pymdownx.superfences]
+custom_fences = [
+    { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
+]
+
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true

@@ -27,6 +27,12 @@ dependencies = [
     "scipy>=1.13",
 ]
 
+[project.urls]
+Homepage = "https://github.com/Blubster/uwb-hrp"
+Documentation = "https://blubster.github.io/uwb-hrp/"
+Repository = "https://github.com/Blubster/uwb-hrp"
+Issues = "https://github.com/Blubster/uwb-hrp/issues"
+
 [project.optional-dependencies]
 rs = [
     "rswaveform>=0.5.0",
@@ -39,6 +45,10 @@ dev = [
     "pytest-cov>=5.0",
     "ruff>=0.6",
 ]
+docs = [
+    "zensical>=0.1",
+    "mkdocstrings[python]>=0.27",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/uwb_hrp"]
@@ -48,7 +58,15 @@ target-version = "py312"
 line-length = 100
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF", "D"]
+ignore = ["D105"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D"]
+"examples/**" = ["D"]
 
 [tool.mypy]
 python_version = "3.12"

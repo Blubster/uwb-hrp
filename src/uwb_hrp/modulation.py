@@ -25,10 +25,23 @@ def modulate_bpm_bpsk(
     n_cpb: int,
     scrambler_offset: int,
 ) -> tuple[np.ndarray, int]:
-    """Modulate ``(g0, g1)`` symbol pairs with BPM-BPSK time hopping and scrambling.
+    """Modulate `(g0, g1)` symbol pairs with BPM-BPSK time hopping and scrambling.
 
-    Implements Section 16.3.1 and Section 16.3.2 (including Note 3 when ``n_cpb < m``).
-    Returns ``(chips, next_scrambler_offset)``.
+    Implements Section 16.3.1 and Section 16.3.2 (including Note 3 when
+    `n_cpb < m`).
+
+    Args:
+        g0: 1D `uint8` burst-position bits (selects first or second half-symbol).
+        g1: 1D `uint8` BPSK burst-polarity bits.
+        scrambler: 1D `uint8` PRBS scrambler bit stream.
+        n_burst: Total burst positions per symbol (`N_burst`).
+        n_hop: Hopping burst positions per half-symbol (`N_hop`).
+        n_cpb: Active chips per burst (`N_cpb`).
+        scrambler_offset: Starting index into `scrambler` for the first symbol.
+
+    Returns:
+        Tuple `(chips, next_scrambler_offset)` where `chips` is a 1D `int8`
+        ternary chip array of length `len(g0) * n_burst * n_cpb`.
     """
     n_syms = len(g0)
     chips_per_sym = n_burst * n_cpb
@@ -71,7 +84,20 @@ def _modulate_hprf_symbols(
     is_phr: bool,
     scrambler_offset: int,
 ) -> tuple[np.ndarray, int]:
-    """Modulate ``(g0, g1)`` pairs in HPRF mode (Sections 16.3.4.2 and 16.3.4.3)."""
+    """Modulate `(g0, g1)` pairs in HPRF mode (Sections 16.3.4.2 and 16.3.4.3).
+
+    Args:
+        g0: 1D `uint8` first convolutional output stream.
+        g1: 1D `uint8` second convolutional output stream.
+        scrambler: 1D `uint8` PRBS scrambler bit stream.
+        mean_prf: HPRF mean PRF in MHz (`124.8` or `249.6`).
+        constraint_length: Convolutional constraint length (`3` or `7`).
+        is_phr: `True` when modulating PHR symbols, `False` for PSDU symbols.
+        scrambler_offset: Starting index into `scrambler`.
+
+    Returns:
+        Tuple `(chips, next_scrambler_offset)` with 1D `int8` ternary chips.
+    """
     n_syms = len(g0)
     if n_syms == 0:
         return np.empty(0, dtype=np.int8), scrambler_offset
@@ -113,11 +139,21 @@ def encode_and_modulate_phr_psdu(
     psdu_bits: np.ndarray,
     cfg: HRPConfig,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Encode and modulate PHR and PSDU into ``(phr_chips, psdu_chips)``.
+    """Encode and modulate PHR and PSDU into `(phr_chips, psdu_chips)`.
 
     Implements:
-    - Table 16-2 (Viterbi rate 0.5) & Table 16-3 (Viterbi rate 1) for 802.15.4a and BPRF
-    - Section 16.3.4 (K=3 with RS and K=7 without RS) for HPRF
+
+    - Table 16-2 (Viterbi rate 0.5) and Table 16-3 (Viterbi rate 1) for
+      `802.15.4a` and `BPRF`.
+    - Section 16.3.4 (`K=3` with RS and `K=7` without RS) for `HPRF`.
+
+    Args:
+        psdu_bits: 1D `uint8` PSDU bits in LSB-first transmission order.
+        cfg: Validated [HRPConfig][uwb_hrp.HRPConfig].
+
+    Returns:
+        Tuple `(phr_chips, psdu_chips)` of 1D `int8` ternary chip arrays (both
+        empty for STS packet configuration 3).
     """
     if not cfg.has_phr_and_psdu:
         empty = np.empty(0, dtype=np.int8)
@@ -136,6 +172,7 @@ def _encode_modulate_bpm_bpsk(
     psdu_bits: np.ndarray,
     cfg: HRPConfig,
 ) -> tuple[np.ndarray, np.ndarray]:
+    """Encode and modulate PHR and PSDU using BPM-BPSK for legacy/BPRF modes."""
     assert cfg.code_index is not None and cfg.mean_prf is not None
     assert cfg.phr_data_rate is not None and cfg.data_rate is not None
 
@@ -183,6 +220,7 @@ def _encode_modulate_hprf(
     psdu_bits: np.ndarray,
     cfg: HRPConfig,
 ) -> tuple[np.ndarray, np.ndarray]:
+    """Encode and modulate PHR and PSDU using HPRF BPSK (`K=3` or `K=7`)."""
     assert cfg.code_index is not None and cfg.mean_prf is not None
     params = HPRF_MOD_PARAMS[(cfg.mean_prf, cfg.constraint_length)]
 

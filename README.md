@@ -1,5 +1,10 @@
 # uwb-hrp
 
+[![CI](https://github.com/Blubster/uwb-hrp/actions/workflows/ci.yml/badge.svg)](https://github.com/Blubster/uwb-hrp/actions/workflows/ci.yml)
+[![Docs](https://github.com/Blubster/uwb-hrp/actions/workflows/docs.yml/badge.svg)](https://blubster.github.io/uwb-hrp/)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 An **IEEE Std 802.15.4-2024 (Clause 16)** compliant High-Rate Pulse Repetition Frequency (HRP) UWB PHY frame and baseband waveform generator in Python.
 
 ## Features
@@ -174,19 +179,35 @@ Run any example with:
 uv run python examples/bprf_frame.py
 ```
 
+## Documentation
+
+Full documentation—including Clause 16 PHY mode tables, `SP0`–`SP3` frame diagrams, pulse-shaping compliance guides, ARB active-power export guides, and the auto-generated API reference—is published at **[blubster.github.io/uwb-hrp](https://blubster.github.io/uwb-hrp/)**.
+
+To preview the documentation locally:
+
+```bash
+uv sync --group docs
+uv run --group docs zensical serve
+```
+
 ## Development & Testing
 
 ```bash
-uv sync --dev
+uv sync --dev --all-extras --group docs
 uv run ruff check src tests examples
 uv run ruff format --check src tests examples
 uv run mypy src tests examples
 uv run pytest --cov=uwb_hrp
+uv run --group docs zensical build --clean --strict
 ```
 
 ### IEEE P802.15.4z Test Vectors
 
 The `tests/ieee_test_vectors/` directory contains the 93 official HRP UWB PHY test vectors from IEEE document **P802.15-20-0002-01-004z** (released publicly by IEEE P802.15; see [tests/ieee_test_vectors/readme.txt](tests/ieee_test_vectors/readme.txt)). Note that Draft D08 (April 2020) omitted the trailing 512 silent zero chips at the end of SP2/SP3 frames; `HRPConfig.sts_trailing_gap` defaults to `True` per IEEE Std 802.15.4-2024 Figures 16-10 and 16-12 and can be set to `False` when reproducing Draft D08 vectors.
+
+## Acknowledgments
+
+This project—including the PHY implementation, pulse shaping, ARB export layer, test suite, and documentation—was entirely created with **Gemini 4 Neon**.
 
 ## License
 

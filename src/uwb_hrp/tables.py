@@ -26,7 +26,18 @@ ALL_CHANNELS: frozenset[int] = WIDEBAND_CHANNELS | NARROWBAND_CHANNELS
 
 @dataclass(frozen=True)
 class ChannelSpec:
-    """Channel frequency and pulse timing parameters (Tables 16-27 and 16-28)."""
+    """Channel frequency and pulse timing parameters (Tables 16-27 and 16-28).
+
+    Attributes:
+        channel: UWB channel number (`0..15`).
+        band_group: IEEE 802.15.4 band group (`0`: sub-GHz, `1`: low band,
+            `2`: high band).
+        center_freq_mhz: Channel center frequency in MHz.
+        bandwidth_mhz: Nominal 3 dB RF channel bandwidth in MHz.
+        pulse_duration_tp_ns: Reference pulse duration `Tp` in nanoseconds.
+        main_lobe_tw_ns: Minimum required cross-correlation main-lobe width
+            `Tw` in nanoseconds.
+    """
 
     channel: int
     band_group: int
@@ -59,7 +70,15 @@ CHANNEL_SPECS: dict[int, ChannelSpec] = {
 
 @dataclass(frozen=True)
 class PreambleCodeSpec:
-    """Ternary preamble code metadata (Tables 16-7, 16-8, and 16-9)."""
+    """Ternary preamble code metadata (Tables 16-7, 16-8, and 16-9).
+
+    Attributes:
+        index: Preamble code index (`1..32`).
+        sequence_str: Ternary code string over `{'+', '-', '0'}`.
+        channels: Set of UWB channels on which this code is permitted.
+        dps_only: `True` for codes reserved exclusively for DPS / multi-user
+            assignments (e.g. codes `13..16` and `21..24`).
+    """
 
     index: int
     sequence_str: str
@@ -68,10 +87,12 @@ class PreambleCodeSpec:
 
     @property
     def length(self) -> int:
+        """Number of chips in the ternary preamble code (`31`, `91`, or `127`)."""
         return len(self.sequence_str)
 
     @property
     def chips(self) -> np.ndarray:
+        """Ternary chip array `{-1, 0, +1}` of dtype `int8`."""
         mapping = {"+": 1, "-": -1, "0": 0}
         return np.array([mapping[ch] for ch in self.sequence_str], dtype=np.int8)
 
@@ -227,7 +248,15 @@ PREAMBLE_CODES: dict[int, PreambleCodeSpec] = {
 
 @dataclass(frozen=True)
 class PreambleTimingSpec:
-    """Preamble spreading parameters (Tables 16-5 and 16-10)."""
+    """Preamble spreading parameters (Tables 16-5 and 16-10).
+
+    Attributes:
+        code_length: Ternary code length (`31`, `91`, or `127`).
+        delta_l: Spreading factor inserting `delta_l - 1` zero chips per code chip.
+        chips_per_symbol: Total chips per spread preamble symbol (`code_length * delta_l`).
+        preamble_peak_prf_mhz: Preamble peak PRF in MHz.
+        preamble_mean_prf_mhz: Preamble mean PRF in MHz.
+    """
 
     code_length: int
     delta_l: int
@@ -365,7 +394,18 @@ SFD_SEQUENCES: dict[int | str, np.ndarray] = {
 
 @dataclass(frozen=True)
 class BPMBPSKParams:
-    """BPM-BPSK data symbol structure parameters (Tables 16-4 and 16-12)."""
+    """BPM-BPSK data symbol structure parameters (Tables 16-4 and 16-12).
+
+    Attributes:
+        mean_prf_mhz: Data mean PRF in MHz (`3.9`, `15.6`, or `62.4`).
+        data_rate_mbps: PSDU data rate in Mb/s.
+        viterbi_rate: Inner convolutional code rate (`0.5` or `1.0`).
+        n_burst: Total burst positions per symbol (`N_burst`).
+        n_hop: Hopping burst positions per half-symbol (`N_hop`).
+        n_cpb: Active chips per burst (`N_cpb`).
+        chips_per_symbol: Total chips per BPM-BPSK symbol (`n_burst * n_cpb`).
+        phr_rate_bits: 2-bit PHR data-rate encoding `(DR0, DR1)` (Table 16-12).
+    """
 
     mean_prf_mhz: float
     data_rate_mbps: float
@@ -399,7 +439,21 @@ BPM_BPSK_PARAMS: dict[tuple[float, float], BPMBPSKParams] = {
 
 @dataclass(frozen=True)
 class HPRFModParams:
-    """HPRF modulation parameters (Tables 16-21 and 16-22)."""
+    """HPRF modulation parameters (Tables 16-21 and 16-22).
+
+    Attributes:
+        mean_prf_mhz: HPRF mean PRF in MHz (`124.8` or `249.6`).
+        constraint_length: Convolutional constraint length (`3` or `7`).
+        data_rate_mbps: PSDU data rate in Mb/s.
+        phr_rate_mbps: PHR data rate in Mb/s.
+        pulses_per_data_symbol: Active pulses per PSDU symbol.
+        chips_per_data_symbol: Total chips per PSDU symbol.
+        pulses_per_phr_symbol: Active pulses per PHR symbol.
+        chips_per_phr_symbol: Total chips per PHR symbol.
+        pulses_per_burst: Active pulses per burst slot.
+        pulse_spacing_chips: Chip spacing between consecutive pulses in a burst.
+        guard_chips: Silent guard chips following each burst.
+    """
 
     mean_prf_mhz: float
     constraint_length: int

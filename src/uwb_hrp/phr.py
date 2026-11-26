@@ -11,7 +11,17 @@ from uwb_hrp.tables import BPM_BPSK_PARAMS, PREAMBLE_DURATION_BITS
 
 
 def compute_secded(b: Sequence[int]) -> list[int]:
-    """Compute the 6-bit SECDED parity field ``[b13..b18]`` (Section 16.2.7.1)."""
+    """Compute the 6-bit SECDED parity field `[b13..b18]` (Section 16.2.7.1).
+
+    Args:
+        b: Exactly 13 PHR information bits `[b0..b12]`.
+
+    Returns:
+        List of 6 parity bits `[b13, b14, b15, b16, b17, b18]`.
+
+    Raises:
+        ValueError: If `len(b) != 13`.
+    """
     if len(b) != 13:
         raise ValueError(f"SECDED requires exactly 13 information bits (b0..b12), got {len(b)}.")
     b18 = b[1] ^ b[0] ^ b[8] ^ b[6] ^ b[4] ^ b[3] ^ b[10] ^ b[11]
@@ -43,7 +53,17 @@ def compute_secded(b: Sequence[int]) -> list[int]:
 
 
 def build_phr_bits(cfg: HRPConfig) -> np.ndarray:
-    """Build the 19-bit PHR field ``H0..H18`` for ``cfg`` (Sections 16.2.7.1 - 16.2.7.3)."""
+    """Build the 19-bit PHR field `H0..H18` for `cfg` (Sections 16.2.7.1-16.2.7.3).
+
+    Args:
+        cfg: Validated [HRPConfig][uwb_hrp.HRPConfig] with `sts_packet_config != 3`.
+
+    Returns:
+        1D `uint8` array of 19 PHR bits (`13` info bits + `6` SECDED parity bits).
+
+    Raises:
+        ValueError: If `cfg.sts_packet_config == 3` (SP3 carries no PHR).
+    """
     if not cfg.has_phr_and_psdu:
         raise ValueError("STS packet configuration 3 has no PHR field.")
 

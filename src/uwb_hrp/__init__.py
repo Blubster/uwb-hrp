@@ -1,4 +1,10 @@
-"""IEEE Std 802.15.4-2024 HRP UWB PHY frame and baseband waveform generator."""
+"""IEEE Std 802.15.4-2024 HRP UWB PHY frame and baseband waveform generator.
+
+This package implements Clause 16 High-Rate Pulse Repetition Frequency (HRP) UWB
+physical layer frame generation, baseband pulse shaping with Sections 16.4.4 and
+16.4.5 compliance verification, and extensible arbitrary waveform generator (ARB)
+export with active-power normalization and sample-synchronous markers.
+"""
 
 from importlib.metadata import PackageNotFoundError, version
 

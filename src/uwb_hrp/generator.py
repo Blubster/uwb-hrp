@@ -27,23 +27,24 @@ PSDUInput = SinglePSDUInput | Sequence[bytes | bytearray | memoryview]
 
 @dataclass(frozen=True)
 class HRPWaveformResult:
-    """Result returned by :func:`generate_waveform`.
+    """Result returned by [generate_waveform][uwb_hrp.generate_waveform].
 
     Attributes:
-        waveform: 1D float64 pulse-shaped baseband waveform at ``sample_rate`` Hz
-            (including any trailing per-packet ``idle_time`` zeros).
-        chips: Ternary chip sequence ``{-1, 0, +1}`` at 499.2 MHz. Has shape
-            ``(chips_per_packet,)`` when ``num_packets == 1`` and
-            ``(chips_per_packet, num_packets)`` when ``num_packets > 1``.
-        indices: Chip-level field slices and ranging marker offsets for a single packet.
+        waveform: 1D `float64` pulse-shaped baseband waveform at `sample_rate` Hz
+            (including any trailing per-packet `idle_time` zeros).
+        chips: Ternary chip sequence `{-1, 0, +1}` at 499.2 MHz. Has shape
+            `(chips_per_packet,)` when `num_packets == 1` and
+            `(chips_per_packet, num_packets)` when `num_packets > 1`.
+        indices: Chip-level field slices and ranging marker offsets for a single
+            packet.
         sample_rate: Output waveform sample rate in Hz.
         pulse_taps: Sampled baseband pulse shaping impulse response taps.
         num_packets: Number of packets generated.
         idle_samples: Number of silent zero samples appended after each packet.
-        next_sts_v: Next 16-byte STS DRBG ``V`` value after the generated packet(s)
-            when STS is enabled (``sts_packet_config > 0``), or ``None`` when STS is
-            disabled. Pass this to ``dataclasses.replace(cfg, sts_v=res.next_sts_v)``
-            to stream consecutive frames with continuously advancing ``VCounter``.
+        next_sts_v: Next 16-byte STS DRBG `V` value after the generated packet(s)
+            when STS is enabled (`sts_packet_config > 0`), or `None` when STS is
+            disabled. Pass this to `dataclasses.replace(cfg, sts_v=res.next_sts_v)`
+            to stream consecutive frames with continuously advancing `VCounter`.
     """
 
     waveform: np.ndarray
@@ -62,7 +63,22 @@ def _normalize_single_psdu_bits(
     *,
     pad_or_truncate: bool = False,
 ) -> np.ndarray:
-    """Convert bytes or a 1D bit sequence into a validated uint8 bit array for one packet."""
+    """Convert bytes or a 1D bit sequence into a validated `uint8` bit array.
+
+    Args:
+        psdu: Single-packet payload bytes, LSB-first bit sequence, or `None`.
+        cfg: Validated PHY frame configuration.
+        pad_or_truncate: If `True`, cyclically repeat or truncate `psdu` to
+            `cfg.psdu_length * 8` bits instead of raising on length mismatch.
+
+    Returns:
+        1D `uint8` array of length `cfg.psdu_length * 8` (empty for SP3 or
+        zero-length PSDU).
+
+    Raises:
+        ValueError: If `psdu` has an invalid shape, non-binary values, or a
+            length mismatch when `pad_or_truncate` is `False`.
+    """
     if not cfg.has_phr_and_psdu:
         if psdu is not None and len(psdu) != 0 and not pad_or_truncate:
             raise ValueError(
@@ -113,7 +129,24 @@ def _normalize_multi_psdu_bits(
     *,
     pad_or_truncate: bool = False,
 ) -> list[np.ndarray]:
-    """Normalize single- or multi-packet PSDU input into ``num_packets`` bit arrays."""
+    """Normalize single- or multi-packet PSDU input into `num_packets` bit arrays.
+
+    Args:
+        psdu: Payload bytes, LSB-first bit sequence, sequence of per-packet byte
+            buffers, or `None`.
+        cfg: Validated PHY frame configuration.
+        num_packets: Number of consecutive packets (`>= 1`).
+        pad_or_truncate: If `True`, cyclically repeat or truncate streams to
+            match the required bit length.
+
+    Returns:
+        List of `num_packets` 1D `uint8` bit arrays, each of length
+        `cfg.psdu_length * 8` (or empty for SP3).
+
+    Raises:
+        ValueError: If `num_packets < 1` or payload length/values are invalid.
+        TypeError: If a per-packet payload sequence contains non-bytes elements.
+    """
     if num_packets < 1:
         raise ValueError(f"num_packets must be >= 1, got {num_packets}.")
 
@@ -191,7 +224,16 @@ def _normalize_multi_psdu_bits(
 
 
 def field_indices(cfg: HRPConfig) -> HRPFieldIndices:
-    """Compute exact chip-level field slices and ranging marker positions for ``cfg``."""
+    """Compute exact chip-level field slices and ranging marker positions.
+
+    Args:
+        cfg: Validated PHY frame configuration ([HRPConfig][uwb_hrp.HRPConfig]).
+
+    Returns:
+        [HRPFieldIndices][uwb_hrp.HRPFieldIndices] containing 0-based chip
+        slices for all present fields (`sync`, `sfd`, `sts1`, `phr`, `psdu`,
+        `sts2`), `total_chips`, `rmarker_chip`, and `srmarker_chips`.
+    """
     assert cfg.preamble_duration is not None
 
     sync_len = cfg.preamble_duration * cfg.chips_per_preamble_symbol
@@ -254,7 +296,15 @@ def field_indices(cfg: HRPConfig) -> HRPFieldIndices:
 
 
 def _generate_single_packet_chips(psdu_bits: np.ndarray, cfg: HRPConfig) -> np.ndarray:
-    """Generate the 1D ternary chip array for one already-validated packet."""
+    """Generate the 1D ternary chip array for one already-validated packet.
+
+    Args:
+        psdu_bits: Validated 1D `uint8` PSDU bit array in LSB-first order.
+        cfg: Validated PHY frame configuration.
+
+    Returns:
+        1D `int8` ternary chip array `{-1, 0, +1}` at 499.2 MHz.
+    """
     parts: list[np.ndarray] = [generate_sync(cfg), generate_sfd(cfg)]
 
     if cfg.sts_packet_config in (1, 3):
@@ -281,24 +331,30 @@ def generate_chips(
     pad_or_truncate: bool = False,
     advance_sts_counter: bool = True,
 ) -> np.ndarray:
-    """Generate the 499.2 MHz ternary chip sequence ``{-1, 0, +1}`` for one or more HRP PPDUs.
+    """Generate the 499.2 MHz ternary chip sequence `{-1, 0, +1}` for HRP PPDUs.
 
     Args:
         psdu: Payload bytes, LSB-first bit sequence, sequence of per-packet byte
-            buffers, or ``None`` (for zero-length PSDU or STS packet configuration 3).
-        cfg: PHY frame configuration (:class:`HRPConfig`).
-        num_packets: Number of consecutive packets to generate (default ``1``).
-        pad_or_truncate: If ``True``, cyclically repeat short bit/byte streams or
-            truncate long streams to ``num_packets * cfg.psdu_length * 8`` bits.
-            If ``False`` (default), strictly validate exact input length.
-        advance_sts_counter: If ``True`` (default), advance the 32-bit STS DRBG counter
-            ``VCounter`` across consecutive packets per IEEE 802.15.4-2024 Section
-            16.2.9.2 / Annex G. Set ``False`` to reuse ``cfg.sts_v`` for each packet.
+            buffers, or `None` (for zero-length PSDU or STS packet configuration
+            3).
+        cfg: PHY frame configuration ([HRPConfig][uwb_hrp.HRPConfig]).
+        num_packets: Number of consecutive packets to generate (default `1`).
+        pad_or_truncate: If `True`, cyclically repeat short bit/byte streams or
+            truncate long streams to `num_packets * cfg.psdu_length * 8` bits.
+            If `False` (default), strictly validate exact input length.
+        advance_sts_counter: If `True` (default), advance the 32-bit STS DRBG
+            counter `VCounter` across consecutive packets per IEEE 802.15.4-2024
+            Section 16.2.9.2 / Annex G. Set `False` to reuse `cfg.sts_v` for
+            each packet.
 
     Returns:
-        1D ``int8`` array of shape ``(chips_per_packet,)`` when ``num_packets == 1``,
-        or 2D ``int8`` array of shape ``(chips_per_packet, num_packets)`` when
-        ``num_packets > 1``.
+        1D `int8` array of shape `(chips_per_packet,)` when `num_packets == 1`,
+        or 2D `int8` array of shape `(chips_per_packet, num_packets)` when
+        `num_packets > 1`.
+
+    Raises:
+        ValueError: If `num_packets < 1` or `psdu` fails length/value validation.
+        TypeError: If a per-packet payload sequence contains non-bytes elements.
     """
     pkt_bits_list = _normalize_multi_psdu_bits(
         psdu, cfg, num_packets, pad_or_truncate=pad_or_truncate
@@ -332,25 +388,35 @@ def generate_waveform(
 
     Args:
         psdu: Payload bytes, LSB-first bit sequence, sequence of per-packet byte
-            buffers, or ``None`` (for zero-length PSDU or STS packet configuration 3).
-        cfg: PHY frame configuration (:class:`HRPConfig`).
-        pulse: Optional :class:`PulseConfig` subclass (e.g., :class:`ButterworthPulse`
-            or :class:`RRCPulse`) or pre-built :class:`PulseShaper`. Defaults to
-            :class:`ButterworthPulse` (4th-order baseband Butterworth, equivalent to
-            an 8th-order RF bandpass filter per Figure 16-23) at 4 samples/pulse
-            matched to ``cfg.channel``.
-        num_packets: Number of consecutive packets to generate (default ``1``).
+            buffers, or `None` (for zero-length PSDU or STS packet configuration
+            3).
+        cfg: PHY frame configuration ([HRPConfig][uwb_hrp.HRPConfig]).
+        pulse: Optional [PulseConfig][uwb_hrp.PulseConfig] subclass (e.g.,
+            [ButterworthPulse][uwb_hrp.ButterworthPulse] or
+            [RRCPulse][uwb_hrp.RRCPulse]) or pre-built
+            [PulseShaper][uwb_hrp.PulseShaper]. Defaults to
+            [ButterworthPulse][uwb_hrp.ButterworthPulse] (4th-order baseband
+            Butterworth, equivalent to an 8th-order RF bandpass filter per
+            Figure 16-23) at 4 samples/pulse matched to `cfg.channel`.
+        num_packets: Number of consecutive packets to generate (default `1`).
         idle_time: Silent idle duration in seconds appended after each packet
-            (default ``0.0``).
-        pad_or_truncate: If ``True``, cyclically repeat/truncate ``psdu`` to the
+            (default `0.0`).
+        pad_or_truncate: If `True`, cyclically repeat/truncate `psdu` to the
             required total bit count.
-        advance_sts_counter: If ``True`` (default), advance the 32-bit STS DRBG counter
-            across consecutive packets per IEEE 802.15.4-2024 Section 16.2.9.2.
+        advance_sts_counter: If `True` (default), advance the 32-bit STS DRBG
+            counter across consecutive packets per IEEE 802.15.4-2024 Section
+            16.2.9.2.
 
     Returns:
-        :class:`HRPWaveformResult` containing the 1D baseband waveform, ternary chips,
-        single-packet field indices, sample rate, impulse response taps, packet count,
-        per-packet idle sample count, and ``next_sts_v``.
+        [HRPWaveformResult][uwb_hrp.HRPWaveformResult] containing the 1D
+        baseband waveform, ternary chips, single-packet field indices, sample
+        rate, impulse response taps, packet count, per-packet idle sample count,
+        and `next_sts_v`.
+
+    Raises:
+        ValueError: If `idle_time < 0.0`, `num_packets < 1`, or `psdu` is
+            invalid.
+        TypeError: If a per-packet payload sequence contains non-bytes elements.
     """
     if idle_time < 0.0:
         raise ValueError(f"idle_time must be >= 0, got {idle_time}.")

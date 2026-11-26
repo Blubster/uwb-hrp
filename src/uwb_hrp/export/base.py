@@ -1,12 +1,13 @@
 """Vendor-agnostic ARB waveform normalization, active-power metrics, and markers.
 
 This module provides the shared DSP and metadata layer for exporting
-:class:`uwb_hrp.HRPWaveformResult` objects to arbitrary waveform generator (ARB)
-file formats (Rohde & Schwarz ``.wv``, LitePoint ``.iqvsg``, Keysight ``.wfm``,
-etc.) without duplicating active-power or marker-timing logic.
+[HRPWaveformResult][uwb_hrp.HRPWaveformResult] objects to arbitrary waveform
+generator (ARB) file formats (Rohde & Schwarz `.wv`, LitePoint `.iqvsg`,
+Keysight `.wfm`, etc.) without duplicating active-power or marker-timing logic.
 
-To add a new instrument vendor, subclass :class:`ARBExporter` and implement
-:meth:`ARBExporter.save` using :meth:`ARBExporter.prepare`.
+To add a new instrument vendor, subclass [ARBExporter][uwb_hrp.export.ARBExporter]
+and implement [save][uwb_hrp.export.ARBExporter.save] using
+[prepare][uwb_hrp.export.ARBExporter.prepare].
 """
 
 from __future__ import annotations
@@ -37,29 +38,29 @@ _DEFAULT_MIN_MARKER_PULSE_SAMPLES: int = 16
 class WaveformPowerMetrics:
     """Vendor-neutral power and full-scale level-offset metrics for an ARB waveform.
 
-    All offset values are expressed in dB below unity full scale (``1.0``), matching
+    All offset values are expressed in dB below unity full scale (`1.0`), matching
     standard ARB conventions (positive values when the signal is below full scale):
 
-    - ``rms_offset_db = -10 * log10(mean(|z_ref|^2))``
-    - ``peak_offset_db = -20 * log10(max(|z|))``
-    - ``crest_factor_db = rms_offset_db - peak_offset_db`` (PAPR relative to
-      ``power_reference``)
+    - `rms_offset_db = -10 * log10(mean(|z_ref|^2))`
+    - `peak_offset_db = -20 * log10(max(|z|))`
+    - `crest_factor_db = rms_offset_db - peak_offset_db` (PAPR relative to
+      `power_reference`)
 
     Attributes:
         rms_offset_db: RMS level offset in dB below unity full scale computed over
-            ``power_reference`` (default ``"active"``, excluding ``idle_time``).
+            `power_reference` (default `"active"`, excluding `idle_time`).
         peak_offset_db: Peak level offset in dB below unity full scale across the
-            entire waveform (``0.0`` when ``normalization="peak"`` with zero backoff).
-        crest_factor_db: Peak-to-average power ratio (``rms_offset_db - peak_offset_db``)
-            in dB relative to ``power_reference``.
+            entire waveform (`0.0` when `normalization="peak"` with zero backoff).
+        crest_factor_db: Peak-to-average power ratio (`rms_offset_db - peak_offset_db`)
+            in dB relative to `power_reference`.
         total_rms_offset_db: RMS level offset in dB across the entire waveform,
-            including any inter-packet ``idle_time`` zeros.
-        duty_cycle: Active packet sample fraction ``active_samples / total_samples``
-            in ``(0, 1]``.
-        idle_dilution_db: Difference ``total_rms_offset_db - rms_offset_db`` in dB.
-            Equals ``-10 * log10(duty_cycle)`` when ``power_reference == "active"``.
-        power_reference: Waveform region used to compute ``rms_offset_db``.
-        normalization: Scaling convention used (``"peak"`` or ``"rms"``).
+            including any inter-packet `idle_time` zeros.
+        duty_cycle: Active packet sample fraction `active_samples / total_samples`
+            in `(0, 1]`.
+        idle_dilution_db: Difference `total_rms_offset_db - rms_offset_db` in dB.
+            Equals `-10 * log10(duty_cycle)` when `power_reference == "active"`.
+        power_reference: Waveform region used to compute `rms_offset_db`.
+        normalization: Scaling convention used (`"peak"` or `"rms"`).
         active_samples_per_packet: Number of active (non-idle) samples per packet.
         total_samples: Total number of I/Q samples in the exported waveform.
     """
@@ -78,11 +79,17 @@ class WaveformPowerMetrics:
 
 @dataclass(frozen=True)
 class MarkerTrack:
-    """Single sample-synchronous binary marker track as half-open ``[start, stop)`` intervals.
+    """Single sample-synchronous binary marker track as half-open `[start, stop)` intervals.
 
     Provides vendor-neutral storage with direct converters to both transition-list
-    formats (e.g. Rohde & Schwarz ``MARKER LIST``) and per-sample boolean masks
+    formats (e.g. Rohde & Schwarz `MARKER LIST`) and per-sample boolean masks
     (e.g. Keysight / LitePoint / plotting).
+
+    Attributes:
+        name: Semantic track identifier (e.g. `"active_burst"`, `"rmarker"`).
+        intervals: Sorted, non-overlapping half-open `(start, stop)` sample
+            index intervals where the marker is HIGH (`1`).
+        total_samples: Total number of waveform samples covered by the track.
     """
 
     name: str
@@ -112,7 +119,21 @@ class MarkerTrack:
         intervals: Sequence[tuple[int, int]],
         total_samples: int,
     ) -> MarkerTrack:
-        """Create a ``MarkerTrack``, validating and coalescing contiguous intervals."""
+        """Create a `MarkerTrack`, validating and coalescing contiguous intervals.
+
+        Args:
+            name: Semantic track identifier.
+            intervals: Sorted, non-overlapping `(start, stop)` sample intervals.
+            total_samples: Total number of samples in the waveform (`>= 1`).
+
+        Returns:
+            Validated [MarkerTrack][uwb_hrp.export.MarkerTrack] with adjacent
+            intervals merged.
+
+        Raises:
+            ValueError: If `total_samples < 1` or intervals are out of range,
+                unsorted, or overlapping.
+        """
         if total_samples < 1:
             raise ValueError(f"total_samples must be >= 1, got {total_samples}.")
         merged: list[tuple[int, int]] = []
@@ -135,7 +156,11 @@ class MarkerTrack:
         return cls(name=name, intervals=tuple(merged), total_samples=total_samples)
 
     def to_transitions(self) -> list[list[int]]:
-        """Convert to canonical ``[[sample_index, state], ...]`` transitions starting at 0."""
+        """Convert to canonical `[[sample_index, state], ...]` transitions starting at 0.
+
+        Returns:
+            List of `[sample_index, state]` pairs where `state` is `0` or `1`.
+        """
         if not self.intervals:
             return [[0, 0]]
         transitions: list[list[int]] = []
@@ -148,7 +173,11 @@ class MarkerTrack:
         return transitions
 
     def to_mask(self) -> np.ndarray:
-        """Convert to a 1D boolean array of length ``total_samples``."""
+        """Convert to a 1D boolean array of length `total_samples`.
+
+        Returns:
+            1D `bool_` array set to `True` within every HIGH interval.
+        """
         mask = np.zeros(self.total_samples, dtype=np.bool_)
         for start, stop in self.intervals:
             mask[start:stop] = True
@@ -160,12 +189,12 @@ class WaveformMarkers:
     """Vendor-neutral semantic marker tracks for an HRP UWB waveform.
 
     Attributes:
-        active_burst: HIGH during each active UWB packet, LOW during ``idle_time``
+        active_burst: HIGH during each active UWB packet, LOW during `idle_time`
             (ideal for RF Blanking, ALC Hold, and burst-gated power measurement).
         rmarker: Rising-edge trigger pulse at the exact IEEE 802.15.4-2024 RMARKER
             instant (first chip after SFD) of every packet.
         packet_start: Rising-edge trigger pulse at sample 0 of every packet.
-        sts_gate: HIGH during the STS field (``None`` when STS is disabled / SP0).
+        sts_gate: HIGH during the STS field (`None` when STS is disabled / SP0).
         total_samples: Total number of samples in the waveform.
     """
 
@@ -176,13 +205,17 @@ class WaveformMarkers:
     total_samples: int
 
     def to_bitmask(self) -> np.ndarray:
-        """Pack markers into a 1D ``uint8`` per-sample bitmask (bits 0..3).
+        """Pack markers into a 1D `uint8` per-sample bitmask (bits 0..3).
 
         Bit assignment:
-            - Bit 0 (``0x01``): ``active_burst``
-            - Bit 1 (``0x02``): ``rmarker``
-            - Bit 2 (``0x04``): ``packet_start``
-            - Bit 3 (``0x08``): ``sts_gate``
+            - Bit 0 (`0x01`): `active_burst`
+            - Bit 1 (`0x02`): `rmarker`
+            - Bit 2 (`0x04`): `packet_start`
+            - Bit 3 (`0x08`): `sts_gate`
+
+        Returns:
+            1D `uint8` array of length `total_samples` with bit flags set for
+            each active marker track.
         """
         bits = np.zeros(self.total_samples, dtype=np.uint8)
         for bit_idx, track in enumerate(
@@ -198,7 +231,14 @@ class WaveformMarkers:
 
 @dataclass(frozen=True)
 class PreparedARBWaveform:
-    """Normalized I/Q samples, power metrics, and semantic markers ready for ARB export."""
+    """Normalized I/Q samples, power metrics, and semantic markers ready for ARB export.
+
+    Attributes:
+        iq: 1D `complex128` normalized baseband I/Q samples.
+        sample_rate: Waveform sample rate in Hz.
+        metrics: Exact `float64` [WaveformPowerMetrics][uwb_hrp.export.WaveformPowerMetrics].
+        markers: Sample-synchronous [WaveformMarkers][uwb_hrp.export.WaveformMarkers].
+    """
 
     iq: np.ndarray
     sample_rate: float
@@ -207,12 +247,23 @@ class PreparedARBWaveform:
 
 
 def _clean_zero(value: float) -> float:
-    """Normalize ``-0.0`` to ``0.0`` for clean formatting."""
+    """Normalize `-0.0` to `0.0` for clean formatting."""
     return 0.0 if value == 0.0 else value
 
 
 def _packet_geometry(result: HRPWaveformResult) -> tuple[int, int, int, int]:
-    """Return ``(total_samples, packet_stride, active_samples_per_packet, spp)``."""
+    """Validate packet layout and return geometry tuple.
+
+    Args:
+        result: Waveform result returned by [generate_waveform][uwb_hrp.generate_waveform].
+
+    Returns:
+        Tuple `(total_samples, packet_stride, active_samples_per_packet, spp)`.
+
+    Raises:
+        ValueError: If waveform shape, packet count, idle sample count, or chip
+            alignment is inconsistent.
+    """
     if result.waveform.ndim != 1:
         raise ValueError(f"Expected 1D waveform array, got shape {result.waveform.shape}.")
     total_samples = len(result.waveform)
@@ -255,7 +306,24 @@ def _extract_reference_samples(
     active_samples: int,
     spp: int,
 ) -> np.ndarray:
-    """Slice ``iq`` to the sample region selected by ``power_reference``."""
+    """Slice `iq` to the sample region selected by `power_reference`.
+
+    Args:
+        iq: 1D complex baseband waveform.
+        result: Source [HRPWaveformResult][uwb_hrp.HRPWaveformResult].
+        power_reference: Region selector (`"active"`, `"shr"`, `"sync"`, `"sts"`,
+            `"phr"`, `"psdu"`, or `"all"`).
+        stride: Total samples per packet including trailing idle samples.
+        active_samples: Active (non-idle) samples per packet.
+        spp: Oversampling factor in samples per chip.
+
+    Returns:
+        View of `iq` covering the selected reference region.
+
+    Raises:
+        ValueError: If `power_reference` is unsupported or refers to a field
+            absent from `result.indices`.
+    """
     if power_reference not in _VALID_POWER_REFERENCES:
         valid = ", ".join(sorted(_VALID_POWER_REFERENCES))
         raise ValueError(
@@ -302,7 +370,22 @@ def _normalize_and_measure(
     normalization: NormalizationMode = "peak",
     digital_backoff_db: float = 0.0,
 ) -> tuple[np.ndarray, WaveformPowerMetrics]:
-    """Normalize ``result.waveform`` and compute vendor-neutral ARB power metrics in float64."""
+    """Normalize `result.waveform` and compute vendor-neutral ARB power metrics.
+
+    Args:
+        result: Source waveform result.
+        power_reference: Region used to define reference RMS power.
+        normalization: Scaling mode (`"peak"` or `"rms"`).
+        digital_backoff_db: Non-negative digital backoff in dB.
+
+    Returns:
+        Tuple `(iq_norm, metrics)` with normalized `complex128` I/Q samples and
+        exact `float64` [WaveformPowerMetrics][uwb_hrp.export.WaveformPowerMetrics].
+
+    Raises:
+        ValueError: If parameters are invalid, samples are non-finite, or the
+            waveform/reference region has zero power.
+    """
     if normalization not in _VALID_NORMALIZATION_MODES:
         valid = ", ".join(sorted(_VALID_NORMALIZATION_MODES))
         raise ValueError(f"Unsupported normalization {normalization!r}; expected one of: {valid}.")
@@ -384,24 +467,30 @@ def compute_power_metrics(
     """Compute vendor-neutral active-power and full-scale level-offset metrics.
 
     Args:
-        result: Waveform result returned by :func:`uwb_hrp.generate_waveform`.
+        result: Waveform result returned by
+            [generate_waveform][uwb_hrp.generate_waveform].
         power_reference: Waveform region used to define the reference RMS power:
-            - ``"active"`` *(default)*: All active packet samples, excluding any
-              inter-packet ``idle_time`` zeros so idle time never dilutes the power.
-            - ``"shr"``: SYNC + SFD header samples.
-            - ``"sync"``: Preamble SYNC samples only.
-            - ``"sts"``: STS field samples (SP1/SP2/SP3).
-            - ``"phr"``: PHR field samples.
-            - ``"psdu"``: PSDU field samples.
-            - ``"all"``: Entire waveform including ``idle_time`` zeros.
-        normalization: ``"peak"`` *(default)* normalizes the global peak to full scale
-            (``1.0`` minus ``digital_backoff_db``); ``"rms"`` normalizes the reference
-            region RMS to ``1.0`` minus ``digital_backoff_db``.
-        digital_backoff_db: Optional digital backoff in dB (default ``0.0``).
+
+            - `"active"` *(default)*: All active packet samples, excluding any
+              inter-packet `idle_time` zeros so idle time never dilutes the power.
+            - `"shr"`: SYNC + SFD header samples.
+            - `"sync"`: Preamble SYNC samples only.
+            - `"sts"`: STS field samples (SP1/SP2/SP3).
+            - `"phr"`: PHR field samples.
+            - `"psdu"`: PSDU field samples.
+            - `"all"`: Entire waveform including `idle_time` zeros.
+        normalization: `"peak"` *(default)* normalizes the global peak to full
+            scale (`1.0` minus `digital_backoff_db`); `"rms"` normalizes the
+            reference region RMS to `1.0` minus `digital_backoff_db`.
+        digital_backoff_db: Optional digital backoff in dB (default `0.0`).
 
     Returns:
-        :class:`WaveformPowerMetrics` containing exact ``float64`` level offsets,
-        crest factor, duty cycle, and idle dilution.
+        [WaveformPowerMetrics][uwb_hrp.export.WaveformPowerMetrics] containing
+        exact `float64` level offsets, crest factor, duty cycle, and idle dilution.
+
+    Raises:
+        ValueError: If `power_reference`, `normalization`, `digital_backoff_db`,
+            or waveform samples are invalid.
     """
     _, metrics = _normalize_and_measure(
         result,
@@ -420,14 +509,19 @@ def build_waveform_markers(
     """Build vendor-neutral semantic marker tracks for an HRP UWB waveform.
 
     Args:
-        result: Waveform result returned by :func:`uwb_hrp.generate_waveform`.
+        result: Waveform result returned by
+            [generate_waveform][uwb_hrp.generate_waveform].
         pulse_samples: Optional pulse width in samples for trigger markers
-            (``rmarker`` and ``packet_start``). Defaults to ``max(spp, 16)`` clamped
+            (`rmarker` and `packet_start`). Defaults to `max(spp, 16)` clamped
             to packet bounds.
 
     Returns:
-        :class:`WaveformMarkers` containing ``active_burst``, ``rmarker``,
-        ``packet_start``, and (when STS is enabled) ``sts_gate``.
+        [WaveformMarkers][uwb_hrp.export.WaveformMarkers] containing
+        `active_burst`, `rmarker`, `packet_start`, and (when STS is enabled)
+        `sts_gate`.
+
+    Raises:
+        ValueError: If `pulse_samples < 1` or waveform packet geometry is invalid.
     """
     if pulse_samples is not None and pulse_samples < 1:
         raise ValueError(f"pulse_samples must be >= 1, got {pulse_samples}.")
@@ -503,7 +597,24 @@ def prepare_arb_waveform(
     digital_backoff_db: float = 0.0,
     marker_pulse_samples: int | None = None,
 ) -> PreparedARBWaveform:
-    """Normalize an :class:`HRPWaveformResult` and compute metrics + semantic markers."""
+    """Normalize an [HRPWaveformResult][uwb_hrp.HRPWaveformResult] with metrics and markers.
+
+    Args:
+        result: Waveform result returned by
+            [generate_waveform][uwb_hrp.generate_waveform].
+        power_reference: Waveform region used for reference RMS power calculation.
+        normalization: Scaling mode (`"peak"` or `"rms"`).
+        digital_backoff_db: Non-negative digital backoff in dB (default `0.0`).
+        marker_pulse_samples: Optional pulse width in samples for trigger markers.
+
+    Returns:
+        [PreparedARBWaveform][uwb_hrp.export.PreparedARBWaveform] containing
+        normalized I/Q samples, sample rate, power metrics, and semantic markers.
+
+    Raises:
+        ValueError: If normalization parameters, marker width, or waveform data
+            are invalid.
+    """
     iq_norm, metrics = _normalize_and_measure(
         result,
         power_reference=power_reference,
@@ -523,15 +634,17 @@ def prepare_arb_waveform(
 class ARBExporter(ABC):
     """Abstract base class for instrument-specific ARB waveform exporters.
 
-    Subclasses (such as :class:`uwb_hrp.RSWaveformExporter`, or custom exporters for
-    LitePoint, Keysight, NI, etc.) inherit shared active-power normalization and
-    semantic marker generation via :meth:`prepare` and implement :meth:`save`.
+    Subclasses (such as [RSWaveformExporter][uwb_hrp.RSWaveformExporter], or
+    custom exporters for LitePoint, Keysight, NI, etc.) inherit shared
+    active-power normalization and semantic marker generation via
+    [prepare][uwb_hrp.export.ARBExporter.prepare] and implement
+    [save][uwb_hrp.export.ARBExporter.save].
 
     Attributes:
         power_reference: Waveform region used for reference RMS power calculation
-            (default ``"active"``, excluding inter-packet ``idle_time``).
-        digital_backoff_db: Optional digital backoff in dB (default ``0.0``).
-        include_markers: Whether to emit sample-synchronous markers (default ``True``).
+            (default `"active"`, excluding inter-packet `idle_time`).
+        digital_backoff_db: Optional digital backoff in dB (default `0.0`).
+        include_markers: Whether to emit sample-synchronous markers (default `True`).
         marker_pulse_samples: Optional pulse width in samples for trigger markers.
     """
 
@@ -542,11 +655,20 @@ class ARBExporter(ABC):
 
     @property
     def normalization_mode(self) -> NormalizationMode:
-        """Scaling convention expected by the target instrument (default ``"peak"``)."""
+        """Scaling convention expected by the target instrument (default `"peak"`)."""
         return "peak"
 
     def prepare(self, result: HRPWaveformResult) -> PreparedARBWaveform:
-        """Normalize ``result`` and build vendor-neutral metrics and markers."""
+        """Normalize `result` and build vendor-neutral metrics and markers.
+
+        Args:
+            result: Waveform result returned by
+                [generate_waveform][uwb_hrp.generate_waveform].
+
+        Returns:
+            [PreparedARBWaveform][uwb_hrp.export.PreparedARBWaveform] ready for
+            vendor serialization.
+        """
         return prepare_arb_waveform(
             result,
             power_reference=self.power_reference,
@@ -563,4 +685,15 @@ class ARBExporter(ABC):
         *,
         config: HRPConfig | None = None,
     ) -> WaveformPowerMetrics:
-        """Export ``result`` to ``path`` and return its power metrics."""
+        """Export `result` to `path` and return its power metrics.
+
+        Args:
+            result: Waveform result to export.
+            path: Destination file path.
+            config: Optional [HRPConfig][uwb_hrp.HRPConfig] for enriching file
+                metadata headers.
+
+        Returns:
+            Exact `float64` [WaveformPowerMetrics][uwb_hrp.export.WaveformPowerMetrics]
+            computed during export.
+        """

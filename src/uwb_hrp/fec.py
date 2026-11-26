@@ -35,7 +35,14 @@ for _a in range(1, _GF_SIZE):
 
 
 def _build_rs_generator() -> np.ndarray:
-    """Compute g(x) = prod_{k=1..8} (x + alpha^k) in GF(2^6) (highest degree first)."""
+    """Compute the RS6(63, 55) generator polynomial in GF(2^6).
+
+    Evaluates `g(x) = prod_{k=1..8} (x + alpha^k)` with highest-degree
+    coefficient first.
+
+    Returns:
+        1D `int32` array of 9 generator coefficients in GF(2^6).
+    """
     poly = [1]
     for k in range(1, 9):
         root = int(_GF_EXP[k])
@@ -55,13 +62,24 @@ RS_PARITY_BITS: int = 48
 
 
 def rs_encode_block(bits: np.ndarray) -> np.ndarray:
-    """Encode a single block of 1 <= I <= 330 bits using systematic RS6(63, 55).
+    """Encode a single block of `1 <= I <= 330` bits using systematic RS6(63, 55).
 
     Follows Section 16.3.3.2 steps (a) through (e):
-    - Left-pads with 330 - I zeros.
-    - Packs 6-bit LSB-first symbols D_0..D_54.
-    - Computes 8 parity symbols P(x) = x^8 * D(x) mod g(x).
-    - Unpacks LSB-first and removes the 330 - I dummy bits.
+
+    - Left-pads with `330 - I` zeros.
+    - Packs 6-bit LSB-first symbols `D_0..D_54`.
+    - Computes 8 parity symbols `P(x) = x^8 * D(x) mod g(x)`.
+    - Unpacks LSB-first and removes the `330 - I` dummy bits.
+
+    Args:
+        bits: 1D binary array of at most 330 information bits.
+
+    Returns:
+        1D `uint8` systematic codeword of length `len(bits) + 48` (or empty if
+        `len(bits) == 0`).
+
+    Raises:
+        ValueError: If `len(bits) > 330`.
     """
     n_bits = len(bits)
     if n_bits == 0:
@@ -113,7 +131,15 @@ def rs_encode_block(bits: np.ndarray) -> np.ndarray:
 
 
 def rs_encode(bits: np.ndarray) -> np.ndarray:
-    """Encode an arbitrary-length PSDU bit array with RS6(63, 55) in 330-bit blocks."""
+    """Encode an arbitrary-length PSDU bit array with RS6(63, 55) in 330-bit blocks.
+
+    Args:
+        bits: 1D binary PSDU bit array in LSB-first transmission order.
+
+    Returns:
+        1D `uint8` concatenated RS-encoded bit stream (48 parity bits per
+        330-bit block).
+    """
     n_bits = len(bits)
     if n_bits == 0:
         return np.empty(0, dtype=np.uint8)
@@ -125,7 +151,14 @@ def rs_encode(bits: np.ndarray) -> np.ndarray:
 
 
 def rs_encoded_length_bits(psdu_length_octets: int) -> int:
-    """Return total RS-encoded bit length for a PSDU of ``psdu_length_octets`` bytes."""
+    """Return total RS-encoded bit length for a PSDU of `psdu_length_octets` bytes.
+
+    Args:
+        psdu_length_octets: PSDU length in octets (`>= 0`).
+
+    Returns:
+        Total bit count after block-wise RS6(63, 55) parity insertion.
+    """
     n_bits = psdu_length_octets * 8
     if n_bits == 0:
         return 0
@@ -136,9 +169,17 @@ def rs_encoded_length_bits(psdu_length_octets: int) -> int:
 def conv_encode_k3(bits: np.ndarray, *, append_tail: bool = True) -> tuple[np.ndarray, np.ndarray]:
     """Encode bits with the K=3 systematic rate-1/2 convolutional code (Section 16.3.3.3).
 
-    Generator polynomials: g0 = [010]_2 (x[n-1]), g1 = [101]_2 (x[n] ^ x[n-2]).
-    Initial state is all-zero; when ``append_tail`` is True, two zero tail bits
-    are appended so the encoder returns to the all-zero state (Table 16-2).
+    Generator polynomials: `g0 = [010]_2` (`x[n-1]`), `g1 = [101]_2`
+    (`x[n] ^ x[n-2]`). Initial state is all-zero; when `append_tail` is `True`,
+    two zero tail bits are appended so the encoder returns to the all-zero state
+    (Table 16-2).
+
+    Args:
+        bits: 1D binary input bit array.
+        append_tail: Whether to append 2 zero flush bits (default `True`).
+
+    Returns:
+        Tuple `(g0, g1)` of 1D `uint8` coded output bit streams.
     """
     src = np.asarray(bits, dtype=np.uint8)
     if append_tail:
@@ -152,10 +193,17 @@ def conv_encode_k3(bits: np.ndarray, *, append_tail: bool = True) -> tuple[np.nd
 def conv_encode_k7(bits: np.ndarray, *, append_tail: bool = True) -> tuple[np.ndarray, np.ndarray]:
     """Encode bits with the optional HPRF K=7 rate-1/2 convolutional code (Section 16.3.3.3).
 
-    Generator polynomials (133_8, 171_8) with MSB = current input (D^0):
-    - g0(n) = x[n] ^ x[n-2] ^ x[n-3] ^ x[n-5] ^ x[n-6]
-    - g1(n) = x[n] ^ x[n-1] ^ x[n-2] ^ x[n-3] ^ x[n-6]
-    When ``append_tail`` is True, six zero tail bits are appended.
+    Generator polynomials `(133_8, 171_8)` with MSB = current input (`D^0`):
+
+    - `g0(n) = x[n] ^ x[n-2] ^ x[n-3] ^ x[n-5] ^ x[n-6]`
+    - `g1(n) = x[n] ^ x[n-1] ^ x[n-2] ^ x[n-3] ^ x[n-6]`
+
+    Args:
+        bits: 1D binary input bit array.
+        append_tail: Whether to append 6 zero flush bits (default `True`).
+
+    Returns:
+        Tuple `(g0, g1)` of 1D `uint8` coded output bit streams.
     """
     src = np.asarray(bits, dtype=np.uint8)
     if append_tail:
@@ -167,7 +215,14 @@ def conv_encode_k7(bits: np.ndarray, *, append_tail: bool = True) -> tuple[np.nd
 
 
 def bytes_to_bits_lsb(data: bytes | bytearray) -> np.ndarray:
-    """Serialize octets into IEEE 802.15.4 transmission order (LSB of each octet first)."""
+    """Serialize octets into IEEE 802.15.4 transmission order (LSB of each octet first).
+
+    Args:
+        data: Input byte sequence.
+
+    Returns:
+        1D `uint8` array of length `8 * len(data)` containing bits `{0, 1}`.
+    """
     if len(data) == 0:
         return np.empty(0, dtype=np.uint8)
     arr = np.frombuffer(data, dtype=np.uint8)
@@ -175,7 +230,17 @@ def bytes_to_bits_lsb(data: bytes | bytearray) -> np.ndarray:
 
 
 def bits_lsb_to_bytes(bits: Sequence[int] | np.ndarray) -> bytes:
-    """Pack IEEE 802.15.4 LSB-first transmission-order bits back into octets."""
+    """Pack IEEE 802.15.4 LSB-first transmission-order bits back into octets.
+
+    Args:
+        bits: Binary bit sequence whose length is a multiple of 8.
+
+    Returns:
+        Packed `bytes` object of length `len(bits) // 8`.
+
+    Raises:
+        ValueError: If `len(bits)` is not divisible by 8.
+    """
     arr = np.asarray(bits, dtype=np.uint8)
     if len(arr) % 8 != 0:
         raise ValueError(f"Bit length must be a multiple of 8, got {len(arr)}.")
@@ -185,10 +250,16 @@ def bits_lsb_to_bytes(bits: Sequence[int] | np.ndarray) -> bytes:
 
 
 def compute_fcs16_bits(bits: Sequence[int] | np.ndarray) -> np.ndarray:
-    """Compute IEEE 802.15.4 Section 7.2.11 2-octet ITU-T CRC-16 over transmission-order bits.
+    """Compute IEEE 802.15.4 Section 7.2.11 2-octet ITU-T CRC-16 over transmission bits.
 
-    Generator polynomial: G16(x) = x^16 + x^12 + x^5 + 1.
-    Returns 16 bits ``[r0, ..., r15]`` in transmission order (r0 first).
+    Generator polynomial: `G16(x) = x^16 + x^12 + x^5 + 1`.
+
+    Args:
+        bits: Sequence of transmission-order frame bits `{0, 1}`.
+
+    Returns:
+        1D `uint8` array of 16 FCS bits `[r0, ..., r15]` in transmission order
+        (`r0` first).
     """
     reg = 0
     for bit in bits:
@@ -200,19 +271,32 @@ def compute_fcs16_bits(bits: Sequence[int] | np.ndarray) -> np.ndarray:
 
 
 def compute_fcs16(data: bytes | bytearray) -> bytes:
-    """Compute IEEE 802.15.4 Section 7.2.11 2-octet FCS for ``data``."""
+    """Compute IEEE 802.15.4 Section 7.2.11 2-octet FCS for `data`.
+
+    Args:
+        data: MAC frame bytes (MHR + MAC payload) excluding the FCS field.
+
+    Returns:
+        2-byte CRC-16 FCS ready to append to `data`.
+    """
     fcs_bits = compute_fcs16_bits(bytes_to_bits_lsb(data))
     return bits_lsb_to_bytes(fcs_bits)
 
 
 def compute_fcs32_bits(bits: Sequence[int] | np.ndarray) -> np.ndarray:
-    """Compute IEEE 802.15.4 Section 7.2.11 4-octet ANSI X3.66 CRC-32 over transmission-order bits.
+    """Compute IEEE 802.15.4 Section 7.2.11 4-octet ANSI X3.66 CRC-32 over bits.
 
-    Generator polynomial:
-    G32(x) = x^32 + x^26 + x^23 + x^22 + x^16 + x^12 + x^11 + x^10
-             + x^8 + x^7 + x^5 + x^4 + x^2 + x + 1.
-    Pads calculation fields shorter than 32 bits by appending trailing zero bits per Section 7.2.11.
-    Returns 32 bits in transmission order (highest-degree remainder coefficient first).
+    Generator polynomial: `G32(x) = x^32 + x^26 + x^23 + x^22 + x^16 + x^12
+    + x^11 + x^10 + x^8 + x^7 + x^5 + x^4 + x^2 + x + 1`.
+    Pads calculation fields shorter than 32 bits by appending trailing zero bits
+    per Section 7.2.11.
+
+    Args:
+        bits: Sequence of transmission-order frame bits `{0, 1}`.
+
+    Returns:
+        1D `uint8` array of 32 FCS bits in transmission order (highest-degree
+        remainder coefficient first).
     """
     bit_list = [int(b) & 1 for b in bits]
     if len(bit_list) < 32:
@@ -228,6 +312,13 @@ def compute_fcs32_bits(bits: Sequence[int] | np.ndarray) -> np.ndarray:
 
 
 def compute_fcs32(data: bytes | bytearray) -> bytes:
-    """Compute IEEE 802.15.4 Section 7.2.11 4-octet FCS for ``data``."""
+    """Compute IEEE 802.15.4 Section 7.2.11 4-octet FCS for `data`.
+
+    Args:
+        data: MAC frame bytes (MHR + MAC payload) excluding the FCS field.
+
+    Returns:
+        4-byte CRC-32 FCS ready to append to `data`.
+    """
     fcs_bits = compute_fcs32_bits(bytes_to_bits_lsb(data))
     return bits_lsb_to_bytes(fcs_bits)

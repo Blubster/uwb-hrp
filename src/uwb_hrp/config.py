@@ -30,10 +30,65 @@ SFDSelector = int | Literal["long"]
 class HRPConfig:
     """IEEE Std 802.15.4-2024 Clause 16 HRP UWB PHY frame configuration.
 
-    This object encapsulates purely PHY-layer frame parameters (mode, channel,
-    preamble code, PRF, data rate, PHR, SFD, PSDU length, and STS). Baseband
-    pulse shaping and oversampling are configured separately via
-    :class:`uwb_hrp.PulseConfig` and :class:`uwb_hrp.PulseShaper`.
+    Encapsulates purely PHY-layer frame parameters (mode, channel, preamble code,
+    PRF, data rate, PHR, SFD, PSDU length, and STS). Baseband pulse shaping and
+    oversampling are configured separately via [PulseConfig][uwb_hrp.PulseConfig]
+    and [PulseShaper][uwb_hrp.PulseShaper]. Omitted (`None`) parameters are
+    resolved to mode-compliant defaults and validated on construction.
+
+    Attributes:
+        mode: Operating PHY mode: `"802.15.4a"` (legacy), `"BPRF"`, or `"HPRF"`.
+        channel: UWB channel number in `0..15` (Table 16-27). Wideband channels
+            are `4`, `7`, `11`, and `15`.
+        code_index: Ternary preamble code index in `1..32` (Tables 16-7 to 16-9).
+            Length-31 codes (`1..8`) apply to `3.9`/`15.6 MHz`, length-127 codes
+            (`9..24`) apply to `62.4 MHz`/BPRF, and length-91 codes (`25..32`)
+            apply to HPRF. Defaults to the first non-DPS code valid for `channel`.
+        mean_prf: Data mean PRF in MHz. Valid values are `3.9`, `15.6`, or `62.4`
+            in `"802.15.4a"`, `62.4` in `"BPRF"`, and `124.8` or `249.6` in
+            `"HPRF"`. Inferred from `code_index`/`data_rate` or defaulted when
+            `None`.
+        preamble_mean_prf: Preamble mean PRF in MHz (Tables 16-5 and 16-10):
+            `16.1` or `4.03` for length-31 codes, `62.89` for length-127 codes,
+            and `111.09` for length-91 HPRF codes.
+        data_rate: PSDU data rate in Mb/s (Tables 16-4, 16-21, and 16-22).
+            Defaults to `0.85` in `"802.15.4a"`, `6.81` in `"BPRF"`, and the
+            mode-determined rate (`6.81`, `7.8`, `27.24`, or `31.2`) in `"HPRF"`.
+        phr_data_rate: PHR data rate in Mb/s. Defaults to `0.11` (when
+            `data_rate == 0.11`) or `0.85` in `"802.15.4a"`/`"BPRF"`, and the
+            Table 16-21/16-22 rate in `"HPRF"`.
+        preamble_duration: Number of SYNC preamble symbol repetitions (`PSR`).
+            Valid values are `{16, 64, 1024, 4096}` in `"802.15.4a"`/`"BPRF"`
+            and `{16, 24, 32, 48, 64, 96, 128, 256}` in `"HPRF"`. Defaults to `64`.
+        sfd_number: SFD selector: `0` (short) or `"long"` (64-symbol) in
+            `"802.15.4a"`, and `0..4` (Table 16-11) in `"BPRF"`/`"HPRF"`.
+            Defaults to `2` in BPRF/HPRF and `"long"`/`0` in legacy mode.
+        psdu_length: PSDU length in octets (`0..127` for legacy/BPRF, `0..4095`
+            for HPRF). Forced to `0` when `sts_packet_config == 3`.
+        ranging: Ranging bit set in the PHR (Figures 16-7 and 16-8).
+        constraint_length: Convolutional encoder constraint length (`3` or `7`).
+            Only `"HPRF"` supports `7` (without Reed-Solomon coding).
+        sts_packet_config: STS packet configuration `0` (SP0, no STS), `1` (SP1,
+            STS after SFD), `2` (SP2, STS after PSDU), or `3` (SP3, STS only,
+            no PHR/PSDU). Must be `0` in `"802.15.4a"`.
+        num_sts_segments: Number of active STS segments in `1..4` (Table 16-17).
+            Must be `1` in `"BPRF"`.
+        sts_segment_length: Length of each active STS segment in units of 512
+            chips (`{16, 32, 64, 128, 256}`, Table 16-18). Must be `64` in
+            `"BPRF"`.
+        sts_key: 16-byte (128-bit) AES key for the STS DRBG (Section 16.2.9.2).
+        sts_v: 16-byte initial `VUpper96 || VCounter` state for the STS DRBG.
+        extra_sts_gap: Additional silent gap before STS in SP2 frames, in units
+            of 4 chips (`0..127`, Table 16-19).
+        extra_sts_gap_index: Optional 2-bit HPRF SP2 gap index (`0..3`) encoded
+            in PHR bits `A1`/`A0` when `psdu_size_extension == 0`.
+        psdu_size_extension: HPRF PSDU length extension mode (`0`: <=1023 B,
+            `1`: <=2047 B, `2`: <=4095 B; Table 16-16). Auto-selected from
+            `psdu_length` when `None`.
+        sts_trailing_gap: If `True` (default), include the trailing 512-chip
+            silent gap at the end of SP2/SP3 frames per IEEE Std 802.15.4-2024
+            Figures 16-10 and 16-12. Set `False` only for Draft D08 vector
+            compatibility.
     """
 
     mode: HRPMode = "HPRF"
@@ -87,9 +142,11 @@ class HRPConfig:
         self._validate_sts()
 
     def _set(self, name: str, value: object) -> None:
+        """Assign a field value on this frozen dataclass during initialization."""
         object.__setattr__(self, name, value)
 
     def _default_code_for_channel(self, code_length: int) -> int:
+        """Select the first non-DPS preamble code of `code_length` valid for `channel`."""
         for idx, spec in PREAMBLE_CODES.items():
             if spec.length == code_length and not spec.dps_only and self.channel in spec.channels:
                 return idx
@@ -99,6 +156,7 @@ class HRPConfig:
         )
 
     def _init_legacy(self) -> None:
+        """Resolve defaults and validate parameters for legacy `802.15.4a` mode."""
         if self.sts_packet_config != 0:
             raise ValueError("STS is only supported in 'BPRF' and 'HPRF' modes, not '802.15.4a'.")
         if self.constraint_length != 3:
@@ -206,6 +264,7 @@ class HRPConfig:
             )
 
     def _init_bprf(self) -> None:
+        """Resolve defaults and validate parameters for `BPRF` mode."""
         if self.constraint_length != 3:
             raise ValueError("constraint_length must be 3 in 'BPRF' mode.")
         if self.psdu_size_extension is not None and self.psdu_size_extension != 0:
@@ -265,6 +324,7 @@ class HRPConfig:
             raise ValueError(f"psdu_length must be in 0..127 for 'BPRF', got {self.psdu_length}.")
 
     def _init_hprf(self) -> None:
+        """Resolve defaults and validate parameters for `HPRF` mode."""
         if self.mean_prf is None:
             if self.data_rate in (27.24, 31.2):
                 self._set("mean_prf", 249.6)
@@ -361,6 +421,7 @@ class HRPConfig:
                 )
 
     def _validate_code_index(self, expected_length: int) -> None:
+        """Validate `code_index` existence, expected code length, and channel allowance."""
         assert self.code_index is not None
         if self.code_index not in PREAMBLE_CODES:
             raise ValueError(f"Invalid code_index {self.code_index}; expected integer in 1..32.")
@@ -378,6 +439,7 @@ class HRPConfig:
             )
 
     def _validate_sts(self) -> None:
+        """Validate STS segment counts, lengths, DRBG key/V sizes, and SP2 gap."""
         if self.sts_packet_config == 0:
             if self.extra_sts_gap != 0:
                 raise ValueError("extra_sts_gap is only valid when sts_packet_config == 2.")
@@ -445,34 +507,41 @@ class HRPConfig:
 
     @property
     def preamble_code_length(self) -> int:
+        """Ternary preamble code length (31, 91, or 127 chips)."""
         assert self.code_index is not None
         return PREAMBLE_CODES[self.code_index].length
 
     @property
     def preamble_spreading_factor(self) -> int:
+        """Preamble spreading factor `delta_L` (Tables 16-5 and 16-10)."""
         assert self.preamble_mean_prf is not None
         return PREAMBLE_TIMING[(self.preamble_code_length, self.preamble_mean_prf)].delta_l
 
     @property
     def chips_per_preamble_symbol(self) -> int:
+        """Total chips per spread preamble symbol `S_i` (`code_length * delta_L`)."""
         assert self.preamble_mean_prf is not None
         return PREAMBLE_TIMING[(self.preamble_code_length, self.preamble_mean_prf)].chips_per_symbol
 
     @property
     def sfd_length(self) -> int:
+        """Number of preamble symbols in the selected SFD sequence (Table 16-11)."""
         assert self.sfd_number is not None
         return len(SFD_SEQUENCES[self.sfd_number])
 
     @property
     def has_phr_and_psdu(self) -> bool:
+        """Whether the frame carries PHR and PSDU fields (`False` for SP3)."""
         return self.sts_packet_config != 3
 
     @property
     def uses_reed_solomon(self) -> bool:
+        """Whether systematic `RS6(63, 55)` outer coding is active (`constraint_length == 3`)."""
         return self.constraint_length == 3
 
     @property
     def viterbi_rate(self) -> float:
+        """Inner convolutional code rate (`0.5` or `1.0`) for PSDU modulation."""
         if self.mode == "HPRF":
             return 0.5
         assert self.mean_prf is not None and self.data_rate is not None
@@ -480,6 +549,7 @@ class HRPConfig:
 
     @property
     def chips_per_burst(self) -> int:
+        """Number of active pulses/chips per burst (`N_cpb` or HPRF pulses per burst)."""
         if self.mode == "HPRF":
             assert self.mean_prf is not None
             return HPRF_MOD_PARAMS[(self.mean_prf, self.constraint_length)].pulses_per_burst
@@ -488,6 +558,7 @@ class HRPConfig:
 
     @property
     def burst_positions_per_symbol(self) -> int | None:
+        """Number of burst positions `N_burst` per BPM-BPSK symbol, or `None` in HPRF."""
         if self.mode == "HPRF":
             return None
         assert self.mean_prf is not None and self.data_rate is not None
@@ -495,6 +566,7 @@ class HRPConfig:
 
     @property
     def hop_bursts(self) -> int | None:
+        """Number of hopping burst positions `N_hop` per half-symbol, or `None` in HPRF."""
         if self.mode == "HPRF":
             return None
         assert self.mean_prf is not None and self.data_rate is not None
@@ -502,6 +574,7 @@ class HRPConfig:
 
     @property
     def chips_per_data_symbol(self) -> int:
+        """Total chips per modulated PSDU symbol."""
         assert self.mean_prf is not None
         if self.mode == "HPRF":
             return HPRF_MOD_PARAMS[(self.mean_prf, self.constraint_length)].chips_per_data_symbol
@@ -510,6 +583,7 @@ class HRPConfig:
 
     @property
     def chips_per_phr_symbol(self) -> int:
+        """Total chips per modulated PHR symbol."""
         assert self.mean_prf is not None
         if self.mode == "HPRF":
             return HPRF_MOD_PARAMS[(self.mean_prf, self.constraint_length)].chips_per_phr_symbol
@@ -518,6 +592,7 @@ class HRPConfig:
 
     @property
     def sts_spreading_factor(self) -> int | None:
+        """STS chip spreading factor (`8` in BPRF, `4` in HPRF, `None` when SP0)."""
         if self.sts_packet_config == 0:
             return None
         return 8 if self.mode == "BPRF" else 4
@@ -525,7 +600,24 @@ class HRPConfig:
 
 @dataclass(frozen=True)
 class HRPFieldIndices:
-    """Chip-level 0-based slices and ranging marker offsets for an HRP UWB PPDU."""
+    """Chip-level 0-based slices and ranging marker offsets for an HRP UWB PPDU.
+
+    Attributes:
+        sync: 0-based chip slice covering the SYNC preamble field.
+        sfd: 0-based chip slice covering the SFD field.
+        sts1: 0-based chip slice covering the STS field in SP1/SP3 frames, or
+            `None` otherwise.
+        phr: 0-based chip slice covering the PHR field, or `None` in SP3 frames.
+        psdu: 0-based chip slice covering the PSDU field, or `None` for SP3 or
+            zero-length PSDU frames.
+        sts2: 0-based chip slice covering the STS field in SP2 frames, or `None`
+            otherwise.
+        total_chips: Total chip length of a single PPDU at 499.2 MHz.
+        rmarker_chip: 0-based chip index of the ranging marker (first chip after
+            SFD in all STS configurations, Figure 16-3).
+        srmarker_chips: Tuple of 0-based chip indices for STS ranging markers
+            (boundaries of active STS segments, Figures 16-9 to 16-12).
+    """
 
     sync: slice
     sfd: slice
@@ -538,7 +630,13 @@ class HRPFieldIndices:
     srmarker_chips: tuple[int, ...]
 
     def to_1based_ranges(self) -> dict[str, tuple[int, int] | None]:
-        """Return 1-based inclusive ``(start, end)`` ranges matching IEEE ``packet_info.txt``."""
+        """Return 1-based inclusive `(start, end)` ranges matching IEEE `packet_info.txt`.
+
+        Returns:
+            Dictionary mapping field names (`"SYNC"`, `"SFD"`, `"STS1"`, `"PHR"`,
+            `"PSDU"`, `"STS2"`) to 1-based inclusive `(start, end)` chip index
+            tuples, or `None` for absent fields.
+        """
 
         def _conv(s: slice | None) -> tuple[int, int] | None:
             if s is None or s.start == s.stop:
