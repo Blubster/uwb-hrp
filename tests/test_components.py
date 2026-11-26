@@ -68,6 +68,11 @@ def test_section_7_2_11_fcs16_ack_example() -> None:
 
 
 def test_section_7_2_11_fcs32_residue_and_short_padding() -> None:
+    # Verify normative 3-octet Ack example from IEEE 802.15.4-2024 Section 7.2.11 (pp. 84-85)
+    ack_bits = [int(c) for c in "010000000000000001010110"]
+    ack_fcs = compute_fcs32_bits(ack_bits)
+    assert "".join(map(str, ack_fcs.tolist())) == "01011101001010011111101000101000"
+
     # Verify receiver unique remainder polynomial: 0xC704DD7B (Section 7.2.11)
     msg_bits = [1, 0, 1, 1, 0, 0, 1, 0] * 6
     fcs_bits = compute_fcs32_bits(msg_bits)
@@ -79,9 +84,9 @@ def test_section_7_2_11_fcs32_residue_and_short_padding() -> None:
             reg ^= 0x04C11DB7
     assert reg == 0xC704DD7B
 
-    # Verify short (< 4 octet) input matches explicitly zero-padded 4-octet input
+    # Verify short (< 4 octet) input appends trailing zero bits to 32 bits
     short_bits = [1, 0, 1, 0, 1, 1, 0, 0]
-    padded_bits = [0] * 24 + short_bits
+    padded_bits = short_bits + [0] * 24
     assert np.array_equal(compute_fcs32_bits(short_bits), compute_fcs32_bits(padded_bits))
 
 
@@ -119,22 +124,82 @@ def test_secded_single_error_detect_and_overall_parity() -> None:
     assert sum(codeword) % 2 == 0
 
 
-@pytest.mark.parametrize("channel", [0, 3, 4, 7, 9, 11, 15])
 @pytest.mark.parametrize(
-    "pulse_cfg",
+    ("channel", "spp"),
     [
-        ButterworthPulse(samples_per_pulse=4),
-        RRCPulse(samples_per_pulse=4, rolloff=0.5),
-        RRCPulse(samples_per_pulse=4, rolloff=0.45),
+        (0, 4),
+        (3, 4),
+        (9, 4),
+        (4, 8),
+        (7, 8),
+        (11, 8),
+        (15, 8),
     ],
-    ids=["butterworth", "rrc_0.5", "rrc_0.45"],
 )
-def test_pulse_compliance_section_16_4_4(channel: int, pulse_cfg: PulseConfig) -> None:
+@pytest.mark.parametrize("pulse_kind", ["butterworth", "rrc_0.5", "rrc_0.45"])
+def test_pulse_compliance_section_16_4_4(channel: int, spp: int, pulse_kind: str) -> None:
+    pulse_cfg: PulseConfig
+    if pulse_kind == "butterworth":
+        pulse_cfg = ButterworthPulse(samples_per_pulse=spp)
+    elif pulse_kind == "rrc_0.5":
+        pulse_cfg = RRCPulse(samples_per_pulse=spp, rolloff=0.5)
+    else:
+        pulse_cfg = RRCPulse(samples_per_pulse=spp, rolloff=0.45)
+
     shaper = PulseShaper(pulse_cfg, channel=channel)
     report = shaper.verify_compliance()
     assert report.compliant, f"Channel {channel}, {type(pulse_cfg).__name__}: {report}"
+    assert report.xcorr_compliant
+    assert report.psd_compliant
     assert report.main_lobe_width_ns >= report.required_tw_ns
     assert report.max_sidelobe <= 0.3
+    assert report.psd_transition_max_dbr < -10.0
+    assert report.psd_stopband_max_dbr < -18.0
+
+
+def test_pulse_compliance_psd_mask_undersampling_and_min_precursor() -> None:
+    # Undersampled RRC on wideband channel 4 is caught instead of silently re-synthesized
+    rep_wb_spp1 = PulseShaper(
+        RRCPulse(samples_per_pulse=1, rolloff=0.5), channel=4
+    ).verify_compliance()
+    assert not rep_wb_spp1.compliant
+    assert not rep_wb_spp1.xcorr_compliant
+    assert not rep_wb_spp1.psd_compliant
+
+    rep_wb_spp2 = PulseShaper(
+        RRCPulse(samples_per_pulse=2, rolloff=0.5), channel=4
+    ).verify_compliance()
+    assert not rep_wb_spp2.compliant
+    assert not rep_wb_spp2.psd_compliant
+
+    # Butterworth on wideband channel 4 at spp=4 has bilinear warping sidelobe > 0.3
+    rep_wb_bw4 = PulseShaper(ButterworthPulse(samples_per_pulse=4), channel=4).verify_compliance()
+    assert not rep_wb_bw4.xcorr_compliant
+    assert not rep_wb_bw4.compliant
+
+    # Butterworth order=4 at high oversampling (spp=8) exceeds Section 16.4.5 PSD mask slightly,
+    # whereas order=5 satisfies both Section 16.4.4 and Section 16.4.5
+    rep_bw4_hi = PulseShaper(
+        ButterworthPulse(samples_per_pulse=8, order=4), channel=9
+    ).verify_compliance()
+    assert rep_bw4_hi.xcorr_compliant
+    assert not rep_bw4_hi.psd_compliant
+    assert not rep_bw4_hi.compliant
+
+    rep_bw5_hi = PulseShaper(
+        ButterworthPulse(samples_per_pulse=8, order=5), channel=9
+    ).verify_compliance()
+    assert rep_bw5_hi.compliant
+    assert rep_bw5_hi.xcorr_compliant
+    assert rep_bw5_hi.psd_compliant
+
+    # Figure 16-24 minimum-precursor mask: causal Butterworth passes, symmetric RRC has precursors
+    rep_bw4 = PulseShaper(
+        ButterworthPulse(samples_per_pulse=4, order=4), channel=9
+    ).verify_compliance()
+    assert rep_bw4.min_precursor_mask_compliant
+    rep_rrc = PulseShaper(RRCPulse(samples_per_pulse=4, rolloff=0.5), channel=9).verify_compliance()
+    assert not rep_rrc.min_precursor_mask_compliant
 
 
 def test_generate_waveform_api_and_reusable_shaper() -> None:
@@ -300,12 +365,14 @@ def test_config_validation_errors() -> None:
         HRPConfig(mode="802.15.4a", sts_packet_config=1)
     with pytest.raises(ValueError, match="psdu_length"):
         HRPConfig(mode="BPRF", psdu_length=128)
+    # Table 16-11 / Section 16.7: BPRF supports all HRP-ERDEV SFD selectors 0..4 (0 & 2 mandatory)
+    for sfd in (0, 1, 2, 3, 4):
+        cfg_bprf_sfd = HRPConfig(mode="BPRF", sfd_number=sfd)
+        assert cfg_bprf_sfd.sfd_number == sfd
     with pytest.raises(ValueError, match="sfd_number"):
-        HRPConfig(mode="BPRF", sfd_number=1)
+        HRPConfig(mode="BPRF", sfd_number="long")
     with pytest.raises(ValueError, match="sfd_number"):
-        HRPConfig(mode="BPRF", sfd_number=3)
-    with pytest.raises(ValueError, match="sfd_number"):
-        HRPConfig(mode="BPRF", sfd_number=4)
+        HRPConfig(mode="BPRF", sfd_number=5)
     with pytest.raises(ValueError, match="constraint_length"):
         HRPConfig(mode="BPRF", constraint_length=7)
     with pytest.raises(ValueError, match="conflicts"):
@@ -315,14 +382,26 @@ def test_config_validation_errors() -> None:
             psdu_length=4095,
             extra_sts_gap_index=1,
         )
-    # Table 16-16: psdu_size_extension == 1 uses A0 for bit 10, leaving A1 free for gap index MSB
+    # Table 16-16: psdu_size_extension == 1 uses A0 for bit 10, conflicting with 2-bit gap index
+    with pytest.raises(ValueError, match="conflicts"):
+        HRPConfig(
+            mode="HPRF",
+            sts_packet_config=2,
+            psdu_length=1024,
+            extra_sts_gap_index=3,
+        )
+    # Extended PSDU in HPRF SP2 without extra_sts_gap_index is valid (e.g. hprf_34e.mat)
     cfg_ext1 = HRPConfig(
         mode="HPRF",
         sts_packet_config=2,
         psdu_length=1024,
-        extra_sts_gap_index=3,
     )
     assert cfg_ext1.psdu_size_extension == 1
+    # Table 16-17: BPRF STS only supports 1 segment of length 64
+    with pytest.raises(ValueError, match="num_sts_segments=1"):
+        HRPConfig(mode="BPRF", sts_packet_config=1, num_sts_segments=2)
+    with pytest.raises(ValueError, match="sts_segment_length=64"):
+        HRPConfig(mode="BPRF", sts_packet_config=1, sts_segment_length=32)
     with pytest.raises(ValueError, match=r"code_index|length"):
         HRPConfig(mode="HPRF", code_index=9)
     # Wideband Butterworth filter rejects undersampled samples_per_pulse where BW >= fs

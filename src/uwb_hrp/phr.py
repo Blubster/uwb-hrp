@@ -76,8 +76,8 @@ def _build_hprf_phr(cfg: HRPConfig) -> np.ndarray:
         a1 = (length >> 11) & 1
         a0 = (length >> 10) & 1
     elif cfg.psdu_size_extension == 1:
-        # Table 16-16: A0 is bit 10 of PSDU length; A1 remains available for phyHrpUwbPhrA1
-        a1 = (cfg.extra_sts_gap_index >> 1) & 1 if cfg.extra_sts_gap_index is not None else 0
+        # Table 16-16: A0 is bit 10 of PSDU length; A1 is unused (0)
+        a1 = 0
         a0 = (length >> 10) & 1
     elif cfg.extra_sts_gap_index is not None:
         a1 = (cfg.extra_sts_gap_index >> 1) & 1

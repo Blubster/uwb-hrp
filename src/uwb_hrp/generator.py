@@ -37,7 +37,7 @@ class HRPWaveformResult:
             ``(chips_per_packet, num_packets)`` when ``num_packets > 1``.
         indices: Chip-level field slices and ranging marker offsets for a single packet.
         sample_rate: Output waveform sample rate in Hz.
-        pulse_taps: Unit-energy pulse shaping impulse response taps.
+        pulse_taps: Sampled baseband pulse shaping impulse response taps.
         num_packets: Number of packets generated.
         idle_samples: Number of silent zero samples appended after each packet.
         next_sts_v: Next 16-byte STS DRBG ``V`` value after the generated packet(s)

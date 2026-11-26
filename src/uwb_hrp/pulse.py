@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from collections.abc import Callable
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, field
 
 import numpy as np
 from scipy import signal
@@ -241,13 +241,36 @@ class RRCPulse(PulseConfig):
 
 @dataclass(frozen=True)
 class PulseComplianceReport:
-    """IEEE Std 802.15.4-2024 Section 16.4.4 cross-correlation compliance report."""
+    """IEEE Std 802.15.4-2024 Sections 16.4.4 & 16.4.5 pulse compliance report.
+
+    Attributes:
+        compliant: ``True`` if both mandatory Section 16.4.4 cross-correlation
+            and Section 16.4.5 transmit PSD mask requirements are met.
+        peak_correlation: Peak normalized cross-correlation ``max |phi(tau)|``
+            against the Section 16.4.4 reference RRC pulse (``beta = 0.5``).
+        main_lobe_width_ns: Continuous main-lobe width at ``|phi(tau)| >= 0.8`` (ns).
+        required_tw_ns: Minimum required main-lobe width ``Tw`` from Table 16-28 (ns).
+        max_sidelobe: Maximum sidelobe peak magnitude outside the main lobe (limit ``0.3``).
+        xcorr_compliant: Section 16.4.4 cross-correlation compliance flag.
+        psd_compliant: Section 16.4.5 transmit PSD mask compliance flag.
+        psd_transition_max_dbr: Peak relative PSD in ``0.65/Tp < |f| < 0.8/Tp``
+            (limit ``< -10 dBr``; ``+inf`` if sampling rate cannot resolve ``0.65/Tp``).
+        psd_stopband_max_dbr: Peak relative PSD in ``|f| > 0.8/Tp`` up to Nyquist
+            (limit ``< -18 dBr``; ``-inf`` if ``0.8/Tp`` exceeds Nyquist).
+        min_precursor_mask_compliant: Informational check against the recommended
+            Figure 16-24 minimum-precursor time-domain mask.
+    """
 
     compliant: bool
     peak_correlation: float
     main_lobe_width_ns: float
     required_tw_ns: float
     max_sidelobe: float
+    xcorr_compliant: bool = True
+    psd_compliant: bool = True
+    psd_transition_max_dbr: float = float("-inf")
+    psd_stopband_max_dbr: float = float("-inf")
+    min_precursor_mask_compliant: bool = False
 
 
 class PulseShaper:
@@ -299,32 +322,72 @@ class PulseShaper:
         return self._filter_fn(upsampled)
 
     def verify_compliance(self) -> PulseComplianceReport:
-        """Verify pulse compliance against Section 16.4.4 cross-correlation limits.
+        """Verify pulse compliance against Sections 16.4.4 and 16.4.5.
 
-        Checks against the reference RRC pulse (beta = 0.5, Tp from Table 16-28):
-        - Continuous main-lobe width at ``|phi(tau)| >= 0.8`` is at least ``Tw``;
-        - Maximum sidelobe peak is at most ``0.3``.
+        Evaluates the actual configured pulse taps (at ``self.samples_per_pulse``):
+
+        - **Section 16.4.4 (mandatory):** Normalized cross-correlation against the
+          reference RRC pulse (``beta = 0.5``, ``Tp`` from Table 16-28) has
+          continuous main-lobe width at ``|phi(tau)| >= 0.8`` of at least ``Tw``
+          and maximum sidelobe peak ``<= 0.3``.
+        - **Section 16.4.5 (mandatory):** Transmit PSD is ``< -10 dBr`` for
+          ``0.65/Tp < |f - fc| < 0.8/Tp`` and ``< -18 dBr`` for ``|f - fc| > 0.8/Tp``.
+        - **Figure 16-24 (recommended, informational):** Minimum-precursor
+          time-domain amplitude mask relative to the first peak.
         """
-        # Evaluate on a fine time grid (at least 32 samples/chip) for accurate Tw and peak detection
-        fine_spp = max(self.config.samples_per_pulse, 32)
-        if fine_spp == self.config.samples_per_pulse:
-            p = self._taps
+        spp = self.config.samples_per_pulse
+        tp_s = self._ch_spec.pulse_duration_tp_ns * 1e-9
+        fs = PEAK_PRF_HZ * spp
+
+        # 1. Section 16.4.5 Transmit PSD mask on the actual configured discrete-time pulse
+        nfft = max(16384, 1 << (len(self._taps) * 4).bit_length())
+        spectrum = np.fft.rfft(self._taps, n=nfft)
+        freqs = np.fft.rfftfreq(nfft, d=1.0 / fs)
+        mag = np.abs(spectrum)
+        peak_mag = float(np.max(mag))
+        if peak_mag > 0.0:
+            psd_dbr = 20.0 * np.log10(np.maximum(mag / peak_mag, 1e-15))
         else:
-            fine_cfg = replace(self.config, samples_per_pulse=fine_spp)
-            p = PulseShaper(fine_cfg, channel=self.channel).taps
+            psd_dbr = np.full_like(mag, -300.0)
+
+        trans_mask = (freqs > 0.65 / tp_s) & (freqs < 0.8 / tp_s)
+        stop_mask = freqs > 0.8 / tp_s
+        if np.any(trans_mask):
+            psd_transition_max_dbr = float(np.max(psd_dbr[trans_mask]))
+            psd_stopband_max_dbr = (
+                float(np.max(psd_dbr[stop_mask])) if np.any(stop_mask) else float("-inf")
+            )
+            psd_compliant = (psd_transition_max_dbr < -10.0) and (psd_stopband_max_dbr < -18.0)
+        else:
+            # Sampling rate too low (fs/2 <= 0.65/Tp) to resolve the transmit PSD mask
+            psd_transition_max_dbr = float("inf")
+            psd_stopband_max_dbr = float("inf")
+            psd_compliant = False
+
+        # 2. Section 16.4.4 cross-correlation via bandlimited interpolation of actual taps
+        factor = max(1, (32 + spp - 1) // spp)
+        fine_spp = spp * factor
+        p = (
+            np.asarray(signal.resample_poly(self._taps, factor, 1), dtype=np.float64)
+            if factor > 1
+            else self._taps
+        )
 
         span = getattr(self.config, "span_chips", 8)
         ref = rrc_pulse(
             fine_spp,
-            tp_s=self._ch_spec.pulse_duration_tp_ns * 1e-9,
+            tp_s=tp_s,
             rolloff=0.5,
             span_chips=max(span, 12),
         )
 
         # Normalized cross-correlation |phi(tau)|
-        xcorr = np.abs(signal.correlate(p, ref, mode="full")) / (
-            float(np.linalg.norm(p)) * float(np.linalg.norm(ref))
-        )
+        p_norm = float(np.linalg.norm(p))
+        ref_norm = float(np.linalg.norm(ref))
+        if p_norm == 0.0 or ref_norm == 0.0:
+            xcorr = np.zeros(len(p) + len(ref) - 1, dtype=np.float64)
+        else:
+            xcorr = np.abs(signal.correlate(p, ref, mode="full")) / (p_norm * ref_norm)
         peak_idx = int(np.argmax(xcorr))
         peak_val = float(xcorr[peak_idx])
 
@@ -352,11 +415,54 @@ class PulseShaper:
         max_sidelobe = max(sidelobe_peaks, default=0.0)
 
         tw_ns = self._ch_spec.main_lobe_tw_ns
-        compliant = (main_lobe_width_ns >= tw_ns) and (max_sidelobe <= 0.3)
+        xcorr_compliant = (main_lobe_width_ns >= tw_ns) and (max_sidelobe <= 0.3)
+
+        # 3. Figure 16-24 recommended minimum-precursor time-domain mask (informational)
+        min_precursor_ok = self._check_min_precursor_mask(p, fine_spp, tp_s)
+
+        compliant = xcorr_compliant and psd_compliant
         return PulseComplianceReport(
             compliant=compliant,
             peak_correlation=peak_val,
             main_lobe_width_ns=main_lobe_width_ns,
             required_tw_ns=tw_ns,
             max_sidelobe=max_sidelobe,
+            xcorr_compliant=xcorr_compliant,
+            psd_compliant=psd_compliant,
+            psd_transition_max_dbr=psd_transition_max_dbr,
+            psd_stopband_max_dbr=psd_stopband_max_dbr,
+            min_precursor_mask_compliant=min_precursor_ok,
         )
+
+    @staticmethod
+    def _check_min_precursor_mask(p_fine: np.ndarray, fine_spp: int, tp_s: float) -> bool:
+        """Check interpolated pulse against Figure 16-24 minimum-precursor time-domain mask."""
+        if len(p_fine) == 0:
+            return False
+        abs_peak_idx = int(np.argmax(np.abs(p_fine)))
+        peak_mag = float(np.abs(p_fine[abs_peak_idx]))
+        if peak_mag == 0.0:
+            return False
+
+        # Orient positive and scale peak magnitude to 1.0
+        p = (p_fine if p_fine[abs_peak_idx] >= 0.0 else -p_fine) / peak_mag
+
+        # Locate first peak amplitude: max before first >1.25% drop on the main pulse
+        run_max = 0.0
+        first_peak_idx = abs_peak_idx
+        for i, val in enumerate(p):
+            v = float(val)
+            if v > run_max:
+                run_max = v
+                first_peak_idx = i
+            elif run_max > 0.5 and v < run_max - 0.0125:
+                break
+
+        dt_tp = 1.0 / (PEAK_PRF_HZ * fine_spp * tp_s)
+        t_tp = (np.arange(len(p), dtype=np.float64) - first_peak_idx) * dt_tp
+
+        # Figure 16-24 upper and lower bounds in units of Tp
+        upper = np.where(t_tp < -1.25, 0.015, np.where(t_tp <= 1.0, 1.0, 0.3))
+        lower = np.where(t_tp < 0.0, -0.015, np.where(t_tp <= 2.0, -0.5, -0.3))
+        tol = 1e-9
+        return bool(np.all(p <= upper + tol) and np.all(p >= lower - tol))

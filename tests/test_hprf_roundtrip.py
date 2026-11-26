@@ -112,7 +112,7 @@ def _strip_rs_parity(rs_bits: np.ndarray, num_info_bits: int) -> np.ndarray:
     ("mean_prf", "constraint_length", "psdu_length", "ranging", "sts_cfg", "gap_idx"),
     [
         (124.8, 3, 20, True, 0, None),
-        (124.8, 3, 1024, False, 2, 3),  # Table 16-16 ext=1 (A0=len bit10, A1=gap_idx MSB)
+        (124.8, 3, 1024, False, 2, None),  # Table 16-16 ext=1 (A0=len bit10, A1=0)
         (124.8, 7, 0, True, 0, None),  # K=7 zero-byte PSDU (6 tail symbols)
         (124.8, 7, 37, False, 1, None),
         (249.6, 3, 4095, True, 0, None),  # Max HPRF length (ext=2: A1/A0 = len bits 11/10)
@@ -198,8 +198,7 @@ def test_hprf_roundtrip_demodulation_and_phr_decoding(
         assert (a1, a0) == ((psdu_length >> 11) & 1, (psdu_length >> 10) & 1)
     elif cfg.psdu_size_extension == 1:
         assert a0 == ((psdu_length >> 10) & 1)
-        expected_a1 = ((gap_idx >> 1) & 1) if gap_idx is not None else 0
-        assert a1 == expected_a1
+        assert a1 == 0
     else:
         expected_a1 = ((gap_idx >> 1) & 1) if gap_idx is not None else 0
         expected_a0 = (gap_idx & 1) if gap_idx is not None else 0

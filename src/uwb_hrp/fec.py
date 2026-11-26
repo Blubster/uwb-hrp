@@ -211,12 +211,12 @@ def compute_fcs32_bits(bits: Sequence[int] | np.ndarray) -> np.ndarray:
     Generator polynomial:
     G32(x) = x^32 + x^26 + x^23 + x^22 + x^16 + x^12 + x^11 + x^10
              + x^8 + x^7 + x^5 + x^4 + x^2 + x + 1.
-    Pads calculation fields shorter than 32 bits with leading zeros per Section 7.2.11.
+    Pads calculation fields shorter than 32 bits by appending trailing zero bits per Section 7.2.11.
     Returns 32 bits in transmission order (highest-degree remainder coefficient first).
     """
     bit_list = [int(b) & 1 for b in bits]
     if len(bit_list) < 32:
-        bit_list = [0] * (32 - len(bit_list)) + bit_list
+        bit_list = bit_list + [0] * (32 - len(bit_list))
     reg = 0xFFFFFFFF
     for bit in bit_list:
         fb = ((reg >> 31) & 1) ^ bit

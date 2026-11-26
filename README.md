@@ -6,7 +6,7 @@ An **IEEE Std 802.15.4-2024 (Clause 16)** compliant High-Rate Pulse Repetition F
 
 - **All HRP UWB PHY operating modes**:
   - **Legacy (`802.15.4a`)**: Mean PRFs `3.90`, `15.60`, and `62.40 MHz` across all 12 Table 16-4 data rate / PRF combinations (`0.11`, `0.85`, `1.70`, `6.81`, `27.24 Mb/s`), selectable preamble mean PRF (`4.03` / `16.1 MHz`), short & long (64-symbol) SFD, and BPM-BPSK modulation (Viterbi rate 1/2 and rate 1).
-  - **BPRF (`62.40 MHz`)**: `6.81 Mb/s` data rate, `0.85` / `6.81 Mb/s` PHR rates, SFD selectors `0` and `2`, and STS packet configurations `0`–`3`.
+  - **BPRF (`62.40 MHz`)**: `6.81 Mb/s` data rate, `0.85` / `6.81 Mb/s` PHR rates, SFD selectors `0`–`4` (`0` and `2` mandatory), and STS packet configurations `0`–`3`.
   - **HPRF (`124.8` / `249.6 MHz`)**: Constraint length `K = 3` (`RS6(63,55)` + rate-1/2 convolutional coding) and `K = 7` (`133_8, 171_8` convolutional coding), SFD selectors `0`–`4`, PSR `16`–`256`, PSDU lengths up to `4095` bytes (Table 16-16 length extension), STS packet configurations `0`–`3` with `1`–`4` segments (`16`–`256` × 512 chips), and configurable SP2 extra STS gap (`0`–`127` × 4 chips).
 - **All 16 UWB channels (0–15)** including wideband channels (`4`, `7`, `11`, `15`) and **all 32 ternary preamble codes** (Tables 16-7, 16-8, 16-9).
 - **Cryptographic STS (Section 16.2.9 / Annex G)**: AES-128 CTR DRBG with optional per-packet `VCounter` advancement across multi-packet sequences.

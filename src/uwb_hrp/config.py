@@ -253,10 +253,10 @@ class HRPConfig:
 
         if self.sfd_number is None:
             self._set("sfd_number", 2)
-        if self.sfd_number not in (0, 2):
+        if self.sfd_number not in (0, 1, 2, 3, 4):
             raise ValueError(
                 f"Invalid sfd_number {self.sfd_number!r} for 'BPRF'; "
-                "expected 0 or 2 (Section 16.2.6.3)."
+                "expected 0, 1, 2, 3, or 4 (Table 16-11)."
             )
 
         if self.sts_packet_config == 3:
@@ -354,10 +354,10 @@ class HRPConfig:
                 raise ValueError(
                     f"extra_sts_gap_index must be in 0..3, got {self.extra_sts_gap_index}."
                 )
-            if self.psdu_size_extension == 2:
+            if self.psdu_size_extension != 0:
                 raise ValueError(
                     "extra_sts_gap_index uses PHR bits A1/A0 and conflicts with "
-                    "psdu_size_extension == 2."
+                    f"psdu_size_extension == {self.psdu_size_extension} (Table 16-16)."
                 )
 
     def _validate_code_index(self, expected_length: int) -> None:
@@ -382,6 +382,17 @@ class HRPConfig:
             if self.extra_sts_gap != 0:
                 raise ValueError("extra_sts_gap is only valid when sts_packet_config == 2.")
             return
+        if self.mode == "BPRF":
+            if self.num_sts_segments != 1:
+                raise ValueError(
+                    f"BPRF mode only supports num_sts_segments=1 (Table 16-17), "
+                    f"got {self.num_sts_segments}."
+                )
+            if self.sts_segment_length != 64:
+                raise ValueError(
+                    f"BPRF mode only supports sts_segment_length=64 (Table 16-17), "
+                    f"got {self.sts_segment_length}."
+                )
         if self.num_sts_segments not in (1, 2, 3, 4):
             raise ValueError(f"num_sts_segments must be in 1..4, got {self.num_sts_segments}.")
         if self.sts_segment_length not in VALID_STS_SEGMENT_LENGTHS:
