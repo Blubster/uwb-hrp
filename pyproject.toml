@@ -27,6 +27,11 @@ dependencies = [
     "scipy>=1.13",
 ]
 
+[project.optional-dependencies]
+rs = [
+    "rswaveform>=0.5.0",
+]
+
 [dependency-groups]
 dev = [
     "mypy>=1.11",
@@ -54,7 +59,7 @@ no_implicit_optional = true
 strict_equality = true
 
 [[tool.mypy.overrides]]
-module = ["scipy", "scipy.*"]
+module = ["RsWaveform", "RsWaveform.*", "scipy", "scipy.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]

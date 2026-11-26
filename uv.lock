@@ -339,6 +339,12 @@ wheels = [
 ]
 
 [[package]]
+name = "indexedproperty"
+version = "0.1.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/54/cb/24522d66c38a3c1579973fb077f137b299a897d1ab3e8aa90e0a5ce7c449/indexedproperty-0.1.4.tar.gz", hash = "sha256:b0b7cda071b67698e401513a5192a3dcd6a18ea044430e08d797658f9cabeec8", size = 18321, upload-time = "2017-09-19T22:01:33.077Z" }
+
+[[package]]
 name = "iniconfig"
 version = "2.3.1"
 source = { registry = "https://pypi.org/simple" }
@@ -663,6 +669,19 @@ wheels = [
 ]
 
 [[package]]
+name = "rswaveform"
+version = "0.5.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "indexedproperty" },
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/88/1d/9b9f157e49ce85b95fc0dc8147a5e96810a1da389b1f7cab35830e06387a/rswaveform-0.5.0.tar.gz", hash = "sha256:e82596af2d946aa6d1760660f7de2ba7bbfc9993f666387e8307e528872e974d", size = 49671, upload-time = "2025-10-13T11:56:02.419Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f0/2c/5d69abdea03c2002d16362d3d80ad6841fe447cebf056cb60fe9a76376a5/rswaveform-0.5.0-py3-none-any.whl", hash = "sha256:a37bb2d5b31452c4dabd94a22990467180b558435af7dd4b0dc069ff7181d6fa", size = 33883, upload-time = "2025-10-13T11:56:00.946Z" },
+]
+
+[[package]]
 name = "ruff"
 version = "0.17.6"
 source = { registry = "https://pypi.org/simple" }
@@ -777,6 +796,11 @@ dependencies = [
     { name = "scipy" },
 ]
 
+[package.optional-dependencies]
+rs = [
+    { name = "rswaveform" },
+]
+
 [package.dev-dependencies]
 dev = [
     { name = "mypy" },
@@ -789,8 +813,10 @@ dev = [
 requires-dist = [
     { name = "cryptography", specifier = ">=42.0" },
     { name = "numpy", specifier = ">=1.26" },
+    { name = "rswaveform", marker = "extra == 'rs'", specifier = ">=0.5.0" },
     { name = "scipy", specifier = ">=1.13" },
 ]
+provides-extras = ["rs"]
 
 [package.metadata.requires-dev]
 dev = [

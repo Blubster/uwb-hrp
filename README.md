@@ -16,6 +16,9 @@ An **IEEE Std 802.15.4-2024 (Clause 16)** compliant High-Rate Pulse Repetition F
   - Subclass `PulseConfig` to plug in custom pulse shapes without changing `PulseShaper` or `generate_waveform`.
   - Built-in Section 16.4.4 cross-correlation compliance verification (`PulseShaper.verify_compliance()`).
 - **Single- and multi-packet generation** with per-packet `idle_time`, exact chip-level field slices (`field_indices`), RMARKER / SRMARKER offsets, and Section 7.2.11 FCS-16 / FCS-32 helpers.
+- **Extensible ARB waveform export (`uwb_hrp.export`)**:
+  - Vendor-neutral `ARBExporter` base class, active-only power normalization (`peak` or `rms`, excluding `idle_time`), and semantic marker tracks (`active_burst`, `rmarker`, `packet_start`, `sts_gate`) convertible to transition lists or per-sample bitmasks — subclass `ARBExporter` to add new instrument vendors (e.g. LitePoint, Keysight).
+  - Built-in **Rohde & Schwarz `.wv` exporter** (`RSWaveformExporter` / `save_rs_waveform`, optional `uwb-hrp[rs]` extra using [`RsWaveform`](https://github.com/Rohde-Schwarz/RsWaveform)): peak-normalized 16-bit I/Q export with exact `float64` active-power `{LEVEL OFFS}` and Markers 1–4.
 - **Verified against all 93 official IEEE P802.15-20-0002-01-004z test vectors** chip-for-chip, plus coherent BPM-BPSK round-trip demodulation across all legacy PRF modes.
 
 ## Installation
@@ -24,12 +27,16 @@ Requires Python 3.12+. Using [`uv`](https://docs.astral.sh/uv/):
 
 ```bash
 uv sync
+# With optional Rohde & Schwarz .wv waveform export support:
+uv sync --extra rs
 ```
 
 Or with `pip`:
 
 ```bash
 pip install -e .
+# With optional Rohde & Schwarz .wv waveform export support:
+pip install -e ".[rs]"
 ```
 
 ## Quick Start
@@ -105,6 +112,24 @@ res = generate_waveform(
 # res.next_sts_v gives the next 16-byte DRBG V value for streaming subsequent frames
 ```
 
+### Export to Rohde & Schwarz `.wv` format (active-power normalized)
+
+Requires the optional `rs` extra (`uv sync --extra rs` / `pip install -e ".[rs]"`):
+
+```python
+from uwb_hrp import ButterworthPulse, HRPConfig, generate_waveform, save_rs_waveform
+
+cfg = HRPConfig(mode="BPRF", channel=9, sfd_number=2, psdu_length=20, sts_packet_config=2)
+res = generate_waveform(b"\xba\xbe" * 10, cfg, pulse=ButterworthPulse(4), idle_time=100e-6)
+
+# Peak-normalizes I/Q to [-32767, +32767] and computes {LEVEL OFFS} over active
+# packet samples only (excluding idle_time), plus auto-generates Markers 1-4.
+metrics = save_rs_waveform(res, "bprf_sp2.wv", config=cfg)
+print(f"LEVEL OFFS: RMS={metrics.rms_offset_db:.3f} dB, Peak={metrics.peak_offset_db:.3f} dB")
+# On an R&S SMW200A / SMBV100B, setting RF Level = -50 dBm now delivers -50 dBm
+# active burst power regardless of idle_time. Route Marker 1 to RF Blanking / ALC Hold.
+```
+
 ## Public API
 
 | Symbol | Purpose |
@@ -117,9 +142,17 @@ res = generate_waveform(
 | `PulseShaper` | Reusable pulse shaper with `.shape(chips)` and `.verify_compliance()` |
 | `PulseComplianceReport` | Section 16.4.4 main-lobe width & sidelobe compliance report |
 | `HRPWaveformResult` | Returned by `generate_waveform()` with `waveform`, `chips`, `indices`, `sample_rate`, `pulse_taps` |
+| `ARBExporter` | Abstract base class for instrument ARB exporters (shared active-power normalization & markers) |
+| `WaveformPowerMetrics` | Vendor-neutral active/total level offsets, crest factor, duty cycle, and idle dilution metrics |
+| `MarkerTrack` / `WaveformMarkers` | Semantic marker intervals (`active_burst`, `rmarker`, `packet_start`, `sts_gate`) with `.to_transitions()`, `.to_mask()`, `.to_bitmask()` |
+| `PreparedARBWaveform` | Normalized I/Q, metrics, and markers returned by `prepare_arb_waveform()` / `ARBExporter.prepare()` |
+| `RSWaveformExporter` | Rohde & Schwarz `.wv` exporter subclass of `ARBExporter` (`uwb-hrp[rs]`) |
 | `generate_chips()` | Generate 499.2 MHz ternary chip array (1D for 1 packet, 2D `(chips, num_packets)` for multi-packet) |
 | `generate_waveform()` | Generate baseband pulse-shaped waveform for one or more packets with optional `idle_time` |
 | `field_indices()` | Compute `HRPFieldIndices` without generating chips |
+| `compute_power_metrics()` / `prepare_arb_waveform()` | Vendor-neutral active-power metrics and ARB normalization (no vendor SDK required) |
+| `build_waveform_markers()` / `build_rs_markers()` | Build vendor-neutral semantic markers or R&S `MARKER LIST 1..4` tables |
+| `to_rs_waveform()` / `save_rs_waveform()` | Convert/export `HRPWaveformResult` to Rohde & Schwarz `.wv` (`uwb-hrp[rs]`) |
 | `compute_fcs16()` / `compute_fcs32()` | IEEE 802.15.4 Section 7.2.11 16-bit and 32-bit FCS helpers |
 
 ## Examples
@@ -133,6 +166,7 @@ Ready-to-run scripts in [`examples/`](examples/) demonstrate the main workflows:
 | [`examples/legacy_802154a.py`](examples/legacy_802154a.py) | Legacy `802.15.4a` across `3.9`/`15.6`/`62.4 MHz` PRFs, long SFD, wideband channel `4` |
 | [`examples/pulse_shaping.py`](examples/pulse_shaping.py) | `ButterworthPulse` vs `RRCPulse`, §16.4.4 compliance checks, custom `PulseConfig` subclass |
 | [`examples/multipacket_burst.py`](examples/multipacket_burst.py) | Multi-packet burst with per-packet `idle_time` and `advance_sts_counter=True` |
+| [`examples/rs_waveform_export.py`](examples/rs_waveform_export.py) | Rohde & Schwarz `.wv` export with active-power normalization (`idle_time` invariant) and Markers 1–4 |
 
 Run any example with:
 
