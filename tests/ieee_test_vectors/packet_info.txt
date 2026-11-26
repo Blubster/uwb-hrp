@@ -1,0 +1,2211 @@
+BPRF Set #1 (bprf_1.mat)
+========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4_code9, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 0
+     PHR                : PHR @ 975 kbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPPM_BPSK, mean PRF 62.4 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..32512]
+      SFD : [32513..36576]
+      STS1: N/A
+      PHR : [36577..47328]
+      PSDU: [47329..60640]
+      STS2: N/A
+
+
+BPRF Set #1a (bprf_1a.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4_code9, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 0
+     PHR                : PHR @ 7.80 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPPM_BPSK, mean PRF 62.4 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..32512]
+      SFD : [32513..36576]
+      STS1: N/A
+      PHR : [36577..37920]
+      PSDU: [37921..51232]
+      STS2: N/A
+
+
+BPRF Set #2 (bprf_2.mat)
+========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4_code10, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 975 kbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPPM_BPSK, mean PRF 62.4 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..32512]
+      SFD : [32513..36576]
+      STS1: N/A
+      PHR : [36577..47328]
+      PSDU: [47329..60640]
+      STS2: N/A
+
+
+BPRF Set #2a (bprf_2a.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4_code10, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 7.80 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPPM_BPSK, mean PRF 62.4 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..32512]
+      SFD : [32513..36576]
+      STS1: N/A
+      PHR : [36577..37920]
+      PSDU: [37921..51232]
+      STS2: N/A
+
+
+BPRF Set #2b (bprf_2b.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4_code10, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 975 kbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE+CRC16 
+     PSDU Modulation    : BPPM_BPSK, mean PRF 62.4 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..32512]
+      SFD : [32513..36576]
+      STS1: N/A
+      PHR : [36577..47328]
+      PSDU: [47329..60640]
+      STS2: N/A
+
+
+BPRF Set #3 (bprf_3.mat)
+========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4_code11, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 975 kbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPPM_BPSK, mean PRF 62.4 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..32512]
+      SFD : [32513..36576]
+      STS1: [36577..70368]
+      PHR : [70369..81120]
+      PSDU: [81121..94432]
+      STS2: N/A
+
+
+BPRF Set #3a (bprf_3a.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4_code11, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 975 kbit/s
+     PSDU Length        : 127 bytes
+     PSDU Data          : 0xABAB..AB 
+     PSDU Modulation    : BPPM_BPSK, mean PRF 62.4 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..32512]
+      SFD : [32513..36576]
+      STS1: [36577..70368]
+      PHR : [70369..81120]
+      PSDU: [81121..158432]
+      STS2: N/A
+
+
+BPRF Set #3b (bprf_3b.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4_code11, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 7.80 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPPM_BPSK, mean PRF 62.4 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..32512]
+      SFD : [32513..36576]
+      STS1: [36577..70368]
+      PHR : [70369..71712]
+      PSDU: [71713..85024]
+      STS2: N/A
+
+
+BPRF Set #4 (bprf_4.mat)
+========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4_code12, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..32512]
+      SFD : [32513..36576]
+      STS1: [36577..69856]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+BPRF Set #5 (bprf_5.mat)
+========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4_code11, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 975 kbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPPM_BPSK, mean PRF 62.4 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 1 segments, segment length 64
+     STS2 Gap           : no additional gap 
+
+     DRBG seed value      : 14148674d1d336aaf86050a814eb220f362eeb34c44fa8fbd37ec3ca1f9a3de4
+     DRBG seed data value : 362eeb34c44fa8fbd37ec3ca1f9a3de4
+     DRBG seed key value  : 14148674d1d336aaf86050a814eb220f
+
+  Packet field index ranges in test vector:
+      SYNC: [1..32512]
+      SFD : [32513..36576]
+      STS1: N/A
+      PHR : [36577..47328]
+      PSDU: [47329..60640]
+      STS2: [60641..93920]
+
+
+HPRF Set #1 (hprf_1.mat)
+========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: N/A
+      PHR : [26209..28896]
+      PSDU: [28897..42208]
+      STS2: N/A
+
+
+HPRF Set #1a (hprf_1a.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 127 bytes
+     PSDU Data          : 0xABAB..AB 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: N/A
+      PHR : [26209..28896]
+      PSDU: [28897..106208]
+      STS2: N/A
+
+
+HPRF Set #1b (hprf_1b.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 1023 bytes
+     PSDU Data          : 0xABAB..AB 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: N/A
+      PHR : [26209..28896]
+      PSDU: [28897..629472]
+      STS2: N/A
+
+
+HPRF Set #1c (hprf_1c.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 2047 bytes
+     PSDU Data          : 0xABAB..AB 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: N/A
+      PHR : [26209..28896]
+      PSDU: [28897..1230560]
+      STS2: N/A
+
+
+HPRF Set #1d (hprf_1d.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 4095 bytes
+     PSDU Data          : 0xABAB..AB 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: N/A
+      PHR : [26209..28896]
+      PSDU: [28897..2432736]
+      STS2: N/A
+
+
+HPRF Set #1e (hprf_1e.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 7.80 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=7, no RS, 7.80 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: N/A
+      PHR : [26209..27808]
+      PSDU: [27809..38432]
+      STS2: N/A
+
+
+HPRF Set #1f (hprf_1f.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE+CRC16 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: N/A
+      PHR : [26209..28896]
+      PSDU: [28897..42208]
+      STS2: N/A
+
+
+HPRF Set #1g (hprf_1g.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE+CRC32 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: N/A
+      PHR : [26209..28896]
+      PSDU: [28897..42208]
+      STS2: N/A
+
+
+HPRF Set #1h (hprf_1h.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 7.80 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE+CRC16 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=7, no RS, 7.80 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: N/A
+      PHR : [26209..27808]
+      PSDU: [27809..38432]
+      STS2: N/A
+
+
+HPRF Set #1i (hprf_1i.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 7.80 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE+CRC32 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=7, no RS, 7.80 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: N/A
+      PHR : [26209..27808]
+      PSDU: [27809..38432]
+      STS2: N/A
+
+
+HPRF Set #2 (hprf_2.mat)
+========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code26, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..17248]
+      PSDU: [17249..30560]
+      STS2: N/A
+
+
+HPRF Set #3 (hprf_3.mat)
+========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code27, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..15232]
+      PSDU: [15233..18560]
+      STS2: N/A
+
+
+HPRF Set #3a (hprf_3a.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code27, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 127 bytes
+     PSDU Data          : 0xABAB..AB 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..15232]
+      PSDU: [15233..34560]
+      STS2: N/A
+
+
+HPRF Set #3b (hprf_3b.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code27, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 1023 bytes
+     PSDU Data          : 0xABAB..AB 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..15232]
+      PSDU: [15233..165376]
+      STS2: N/A
+
+
+HPRF Set #3c (hprf_3c.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code27, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 2047 bytes
+     PSDU Data          : 0xABAB..AB 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..15232]
+      PSDU: [15233..315648]
+      STS2: N/A
+
+
+HPRF Set #3d (hprf_3d.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code27, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 4095 bytes
+     PSDU Data          : 0xABAB..AB 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..15232]
+      PSDU: [15233..616192]
+      STS2: N/A
+
+
+HPRF Set #3e (hprf_3e.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code27, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 31.20 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=7, no RS, 31.20 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..14960]
+      PSDU: [14961..17616]
+      STS2: N/A
+
+
+HPRF Set #3f (hprf_3f.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code27, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE+CRC16 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..15232]
+      PSDU: [15233..18560]
+      STS2: N/A
+
+
+HPRF Set #3g (hprf_3g.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code27, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE+CRC32 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..15232]
+      PSDU: [15233..18560]
+      STS2: N/A
+
+
+HPRF Set #3h (hprf_3h.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code27, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 31.20 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE+CRC16 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=7, no RS, 31.20 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..14960]
+      PSDU: [14961..17616]
+      STS2: N/A
+
+
+HPRF Set #3i (hprf_3i.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code27, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 31.20 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE+CRC32 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=7, no RS, 31.20 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..14960]
+      PSDU: [14961..17616]
+      STS2: N/A
+
+
+HPRF Set #4 (hprf_4.mat)
+========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code28, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 1
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : no
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..13104]
+      STS1: N/A
+      PHR : [13105..13776]
+      PSDU: [13777..17104]
+      STS2: N/A
+
+
+HPRF Set #5 (hprf_5.mat)
+========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code29, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : yes, 2 segments, segment length 32
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 14148674d1d336aaf86050a814eb220f362eeb34c44fa8fbd37ec3ca1f9a3de4
+     DRBG seed data value : 362eeb34c44fa8fbd37ec3ca1f9a3de4
+     DRBG seed key value  : 14148674d1d336aaf86050a814eb220f
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: [26209..60512]
+      PHR : [60513..63200]
+      PSDU: [63201..76512]
+      STS2: N/A
+
+
+HPRF Set #5a (hprf_5a.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code29, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 7.80 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=7, no RS, 7.80 Mbit/s
+     STS1 (pre-PSDU)    : yes, 2 segments, segment length 32
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: [26209..60512]
+      PHR : [60513..62112]
+      PSDU: [62113..72736]
+      STS2: N/A
+
+
+HPRF Set #6 (hprf_6.mat)
+========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code30, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: [26209..60000]
+      PHR : [60001..62688]
+      PSDU: [62689..76000]
+      STS2: N/A
+
+
+HPRF Set #7 (hprf_7.mat)
+========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code31, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : yes, 2 segments, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: [26209..93280]
+      PHR : [93281..95968]
+      PSDU: [95969..109280]
+      STS2: N/A
+
+
+HPRF Set #8 (hprf_8.mat)
+========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code32, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 32
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: [14561..31968]
+      PHR : [31969..34656]
+      PSDU: [34657..47968]
+      STS2: N/A
+
+
+HPRF Set #9 (hprf_9.mat)
+========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : yes, 2 segments, segment length 32
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: [14561..48864]
+      PHR : [48865..51552]
+      PSDU: [51553..64864]
+      STS2: N/A
+
+
+HPRF Set #10 (hprf_10.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: [14561..48352]
+      PHR : [48353..51040]
+      PSDU: [51041..64352]
+      STS2: N/A
+
+
+HPRF Set #11 (hprf_11.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : yes, 2 segments, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: [14561..81632]
+      PHR : [81633..84320]
+      PSDU: [84321..97632]
+      STS2: N/A
+
+
+HPRF Set #12 (hprf_12.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 128
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: [26209..92768]
+      PHR : [92769..95456]
+      PSDU: [95457..108768]
+      STS2: N/A
+
+
+HPRF Set #13 (hprf_13.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : yes, 2 segments, segment length 128
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: [26209..158816]
+      PHR : [158817..161504]
+      PSDU: [161505..174816]
+      STS2: N/A
+
+
+HPRF Set #14 (hprf_14.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 14148674d1d336aaf86050a814eb220f362eeb34c44fa8fbd37ec3ca1f9a3de4
+     DRBG seed data value : 362eeb34c44fa8fbd37ec3ca1f9a3de4
+     DRBG seed key value  : 14148674d1d336aaf86050a814eb220f
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: [14561..48352]
+      PHR : [48353..49024]
+      PSDU: [49025..52352]
+      STS2: N/A
+
+
+HPRF Set #14a (hprf_14a.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 31.20 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=7, no RS, 31.20 Mbit/s
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: [14561..48352]
+      PHR : [48353..48752]
+      PSDU: [48753..51408]
+      STS2: N/A
+
+
+HPRF Set #15 (hprf_15.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : yes, 2 segments, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: [14561..81632]
+      PHR : [81633..82304]
+      PSDU: [82305..85632]
+      STS2: N/A
+
+
+HPRF Set #16 (hprf_16.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 32
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: [14561..31968]
+      PHR : [31969..32640]
+      PSDU: [32641..35968]
+      STS2: N/A
+
+
+HPRF Set #17 (hprf_17.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : yes, 2 segments, segment length 32
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: [14561..48864]
+      PHR : [48865..49536]
+      PSDU: [49537..52864]
+      STS2: N/A
+
+
+HPRF Set #18 (hprf_18.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 1
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 32
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..13104]
+      STS1: [13105..30512]
+      PHR : [30513..31184]
+      PSDU: [31185..34512]
+      STS2: N/A
+
+
+HPRF Set #19 (hprf_19.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 1
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : yes, 2 segments, segment length 32
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..13104]
+      STS1: [13105..47408]
+      PHR : [47409..48080]
+      PSDU: [48081..51408]
+      STS2: N/A
+
+
+HPRF Set #20 (hprf_20.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 3
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 128
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..29120]
+      STS1: [29121..95168]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #20a (hprf_20a.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 3
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 256
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..29120]
+      STS1: [29121..160704]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #20b (hprf_20b.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 4
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 128
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..34944]
+      STS1: [34945..100992]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #21 (hprf_21.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 3
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 2 segments, segment length 128
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..29120]
+      STS1: [29121..161216]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #21a (hprf_21a.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 3
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 2 segments, segment length 256
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..29120]
+      STS1: [29121..292288]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #22 (hprf_22.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 128
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: [26209..92256]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #23 (hprf_23.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 2 segments, segment length 128
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: [26209..158304]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #24 (hprf_24.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: [26209..59488]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #24a (hprf_24a.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 96 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..34944]
+      SFD : [34945..37856]
+      STS1: [37857..71136]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #24b (hprf_24b.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 128 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..46592]
+      SFD : [46593..49504]
+      STS1: [49505..82784]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #24c (hprf_24c.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 256 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..93184]
+      SFD : [93185..96096]
+      STS1: [96097..129376]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #25 (hprf_25.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 64 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 2 segments, segment length 32
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..23296]
+      SFD : [23297..26208]
+      STS1: [26209..60000]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #26 (hprf_26.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: [14561..47840]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #27 (hprf_27.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 2 segments, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: [14561..81120]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #27a (hprf_27a.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 3 segments, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: [14561..114400]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #27b (hprf_27b.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 4 segments, segment length 64
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: [14561..147680]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #28 (hprf_28.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 32
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: [14561..31456]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #29 (hprf_29.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 2 segments, segment length 32
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: [14561..48352]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #30 (hprf_30.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 1
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 32
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..13104]
+      STS1: [13105..30000]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #30a (hprf_30a.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 16 symbols
+     SFD                : phyHrpUwbSfdSelector 1
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 32
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..5824]
+      SFD : [5825..7280]
+      STS1: [7281..24176]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #30b (hprf_30b.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 24 symbols
+     SFD                : phyHrpUwbSfdSelector 1
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 32
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..8736]
+      SFD : [8737..10192]
+      STS1: [10193..27088]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #30c (hprf_30c.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 48 symbols
+     SFD                : phyHrpUwbSfdSelector 1
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 32
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..17472]
+      SFD : [17473..18928]
+      STS1: [18929..35824]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #31 (hprf_31.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 1
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 2 segments, segment length 32
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..13104]
+      STS1: [13105..46896]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #32 (hprf_32.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : No PHR
+     PSDU Settings      : No active PSDU (zero length)
+     STS1 (pre-PSDU)    : yes, 1 segment, segment length 16
+     STS2 (post-PSDU)   : no
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: [14561..23264]
+      PHR : N/A
+      PSDU: N/A
+      STS2: N/A
+
+
+HPRF Set #33 (hprf_33.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 4 segments, segment length 32
+     STS2 Gap           : no additional gap 
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..17248]
+      PSDU: [17249..30560]
+      STS2: [30561..98144]
+
+
+HPRF Set #33a (hprf_33a.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 3 segments, segment length 64
+     STS2 Gap           : no additional gap 
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..17248]
+      PSDU: [17249..30560]
+      STS2: [30561..130400]
+
+
+HPRF Set #33b (hprf_33b.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 2 segments, segment length 128
+     STS2 Gap           : no additional gap 
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..17248]
+      PSDU: [17249..30560]
+      STS2: [30561..162656]
+
+
+HPRF Set #33c (hprf_33c.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 1 segments, segment length 256
+     STS2 Gap           : no additional gap 
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..17248]
+      PSDU: [17249..30560]
+      STS2: [30561..162144]
+
+
+HPRF Set #34 (hprf_34.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 1 segments, segment length 32
+     STS2 Gap           : gap index 0, gap length 0
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..17248]
+      PSDU: [17249..30560]
+      STS2: [30561..47456]
+
+
+HPRF Set #34a (hprf_34a.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 1 segments, segment length 32
+     STS2 Gap           : gap index 1, gap length 22
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..17248]
+      PSDU: [17249..30560]
+      STS2: [30561..47544]
+
+
+HPRF Set #34b (hprf_34b.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 1 segments, segment length 32
+     STS2 Gap           : gap index 2, gap length 44
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..17248]
+      PSDU: [17249..30560]
+      STS2: [30561..47632]
+
+
+HPRF Set #34c (hprf_34c.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 1 segments, segment length 32
+     STS2 Gap           : gap index 3, gap length 66
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..17248]
+      PSDU: [17249..30560]
+      STS2: [30561..47720]
+
+
+HPRF Set #34d (hprf_34d.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 256 symbols
+     SFD                : phyHrpUwbSfdSelector 4
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 1023 bytes
+     PSDU Data          : 0xABAB..AB 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 4 segments, segment length 256
+     STS2 Gap           : gap index 0, gap length 127
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..93184]
+      SFD : [93185..104832]
+      STS1: N/A
+      PHR : [104833..107520]
+      PSDU: [107521..708096]
+      STS2: [708097..1234940]
+
+
+HPRF Set #34e (hprf_34e.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 256 symbols
+     SFD                : phyHrpUwbSfdSelector 4
+     PHR                : PHR @ 3.90 Mbit/s
+     PSDU Length        : 4095 bytes
+     PSDU Data          : 0xABAB..AB 
+     PSDU Modulation    : BPSK, mean PRF 124.8 MHz, symbol rate 7.8 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 6.81 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 4 segments, segment length 256
+     STS2 Gap           : no additional gap 
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..93184]
+      SFD : [93185..104832]
+      STS1: N/A
+      PHR : [104833..107520]
+      PSDU: [107521..2511360]
+      STS2: [2511361..3037696]
+
+
+HPRF Set #35 (hprf_35.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 4 segments, segment length 32
+     STS2 Gap           : no additional gap 
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..15232]
+      PSDU: [15233..18560]
+      STS2: [18561..86144]
+
+
+HPRF Set #35a (hprf_35a.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 3 segments, segment length 64
+     STS2 Gap           : no additional gap 
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..15232]
+      PSDU: [15233..18560]
+      STS2: [18561..118400]
+
+
+HPRF Set #35b (hprf_35b.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 2 segments, segment length 128
+     STS2 Gap           : no additional gap 
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..15232]
+      PSDU: [15233..18560]
+      STS2: [18561..150656]
+
+
+HPRF Set #35c (hprf_35c.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 1 segments, segment length 256
+     STS2 Gap           : no additional gap 
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..15232]
+      PSDU: [15233..18560]
+      STS2: [18561..150144]
+
+
+HPRF Set #36 (hprf_36.mat)
+==========================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 1 segments, segment length 32
+     STS2 Gap           : gap index 0, gap length 0
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..15232]
+      PSDU: [15233..18560]
+      STS2: [18561..35456]
+
+
+HPRF Set #36a (hprf_36a.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 1 segments, segment length 32
+     STS2 Gap           : gap index 1, gap length 22
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..15232]
+      PSDU: [15233..18560]
+      STS2: [18561..35544]
+
+
+HPRF Set #36b (hprf_36b.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 1 segments, segment length 32
+     STS2 Gap           : gap index 2, gap length 44
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..15232]
+      PSDU: [15233..18560]
+      STS2: [18561..35632]
+
+
+HPRF Set #36c (hprf_36c.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 32 symbols
+     SFD                : phyHrpUwbSfdSelector 2
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 20 bytes
+     PSDU Data          : 0xBABE..BABE 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 1 segments, segment length 32
+     STS2 Gap           : gap index 3, gap length 66
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..11648]
+      SFD : [11649..14560]
+      STS1: N/A
+      PHR : [14561..15232]
+      PSDU: [15233..18560]
+      STS2: [18561..35720]
+
+
+HPRF Set #36d (hprf_36d.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 256 symbols
+     SFD                : phyHrpUwbSfdSelector 4
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 1023 bytes
+     PSDU Data          : 0xABAB..AB 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 4 segments, segment length 256
+     STS2 Gap           : gap index 0, gap length 127
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..93184]
+      SFD : [93185..104832]
+      STS1: N/A
+      PHR : [104833..105504]
+      PSDU: [105505..255648]
+      STS2: [255649..782492]
+
+
+HPRF Set #36e (hprf_36e.mat)
+============================
+  Packet configuration summary:
+     SHR                : SYNC code 802_15_4z_code25, PSR 256 symbols
+     SFD                : phyHrpUwbSfdSelector 4
+     PHR                : PHR @ 15.60 Mbit/s
+     PSDU Length        : 4095 bytes
+     PSDU Data          : 0xABAB..AB 
+     PSDU Modulation    : BPSK, mean PRF 249.6 MHz, symbol rate 31.2 MHz
+     PSDU Encoding      : Conv encoding K=3, RS6_63_55, 27.24 Mbit/s
+     STS1 (pre-PSDU)    : no
+     STS2 (post-PSDU)   : yes, 4 segments, segment length 256
+     STS2 Gap           : no additional gap 
+
+     DRBG seed value      : 4a5572bc90798c8e518d2449092f1b5568debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed data value : 68debd3a599939dd57fdbb0e2a10fac0
+     DRBG seed key value  : 4a5572bc90798c8e518d2449092f1b55
+
+  Packet field index ranges in test vector:
+      SYNC: [1..93184]
+      SFD : [93185..104832]
+      STS1: N/A
+      PHR : [104833..105504]
+      PSDU: [105505..706464]
+      STS2: [706465..1232800]
+
+
